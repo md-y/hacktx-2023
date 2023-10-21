@@ -1,66 +1,62 @@
 {
-    "Users": [
+    "User ID": 0,
+    "Accounts": {
+        "Savings": {
+            "Balance": 0,
+            "Rewards": 0
+        },
+        "Checking": {
+            "Balance": 0,
+            "Rewards": 0
+        },
+        "Credit Card": {
+            "Balance": 0,
+            "Rewards": 0
+        }
+    },
+    "Bills": [
         {
-            "User ID": 0,
-            "Accounts": {
-                "Savings": {
-                    "Balance": 0,
-                    "Rewards": 0
-                },
-                "Checking": {
-                    "Balance": 0,
-                    "Rewards": 0
-                },
-                "Credit Card": {
-                    "Balance": 0,
-                    "Rewards": 0
-                }
-            },
-            "Bills": [
-                {
-                    "Payment Date": "10/21/2023",
-                    "Payment Amount": 0
-                }
-            ],
-            "Deposits": [
-                {
-                    "Date": "10/21/2023",
-                    "Amount": 0,
-                    "Account": [
-                        "Checking",
-                        "Savings"
-                    ]
-                }
-            ],
-            "Withdrawls": [
-                {
-                    "Date": "10/21/2023",
-                    "Amount": 0,
-                    "Account": [
-                        "Checking",
-                        "Savings"
-                    ]
-                }
-            ],
-            "Monthly Bills": [
-                {
-                    "Amount": 0
-                }
-            ],
-            "Assets": [
-                {
-                    "Asset Name": "Asset Name",
-                    "Function Type": [
-                        "Exponential",
-                        "Logarithmic",
-                        "Linear"
-                    ],
-                    "Initial Value": 0,
-                    "Starting Date": "10/21/2023",
-                    "R": 0.5,
-                    "MinMaxValue": 0
-                }
+            "Payment Date": "10/21/2023",
+            "Payment Amount": 0
+        }
+    ],
+    "Deposits": [
+        {
+            "Date": "10/21/2023",
+            "Amount": 0,
+            "Account": [
+                "Checking",
+                "Savings"
             ]
+        }
+    ],
+    "Withdrawls": [
+        {
+            "Date": "10/21/2023",
+            "Amount": 0,
+            "Account": [
+                "Checking",
+                "Savings"
+            ]
+        }
+    ],
+    "Monthly Bills": [
+        {
+            "Amount": 0
+        }
+    ],
+    "Assets": [
+        {
+            "Asset Name": "Asset Name",
+            "Function Type": [
+                "Exponential",
+                "Logarithmic",
+                "Linear"
+            ],
+            "Initial Value": 0,
+            "Starting Date": "10/21/2023",
+            "R": 0.5,
+            "MinMaxValue": 0
         }
     ]
 }
