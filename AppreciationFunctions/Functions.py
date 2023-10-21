@@ -91,9 +91,28 @@ def get_logistic_parameters():
         L = float(input("Enter the limit (maximum/minimum value of asset) (L): "))
     return f"y = {L} / (1 + {c} * e^(-{R} * T))"
 
+
 def get_equation():
+    # List of common assets
+    asset_options = ["house", "car", "stock", "land", "jewelry", "custom"]
+    
     # Ask for asset
-    asset = input("Choose an asset (house, car, etc.): ").lower()
+    print("Choose an asset from the following list:")
+    for idx, asset_choice in enumerate(asset_options, 1):
+        print(f"{idx}. {asset_choice.capitalize()}")
+    
+    asset_choice = input("Enter your choice (number or asset name): ").lower()
+    while asset_choice not in asset_options and asset_choice not in map(str, range(1, len(asset_options) + 1)):
+        print("Invalid choice. Please select from the list above.")
+        asset_choice = input("Enter your choice (number or asset name): ").lower()
+    
+    if asset_choice == "custom" or asset_choice == "6":
+        asset = input("Enter the name of your custom asset: ").lower()
+    else:
+        if asset_choice.isdigit():
+            asset = asset_options[int(asset_choice) - 1]
+        else:
+            asset = asset_choice
 
     # Ask for function type
     function = input("Choose a function (linear/exponential/logistic): ").lower()
@@ -111,5 +130,6 @@ def get_equation():
 
     # Display custom equation
     print(f"Custom equation for {asset}: {equation}")
+
 
 get_equation()
