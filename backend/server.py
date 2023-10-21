@@ -6,12 +6,6 @@ cred = credentials.Certificate("./authenticationKey.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-#for test just get and print a user
-docs = db.collection("Users").stream()
-for doc in docs:
-    print(doc.to_dict())
-
-
 #FLASK SERVER
 from flask import Flask, json, request
 from flask_cors import CORS, cross_origin
@@ -26,18 +20,22 @@ def check_auth():
     if token == None:
         return False
     decoded_token = auth.verify_id_token(token)    
-    uid = decoded_token['uid']    
+    uid = decoded_token['uid']
+    print(uid)
     return True
 
-@api.route('/', methods=['GET'])
+@api.route('/user', methods=['GET'])
 @cross_origin()
-def endpoint():
+def user():
     #Add this line to all things
     if not check_auth():
         return {"error": "error"}, 400
     
-
     try:
+        #for test just get and print a user
+        docs = db.collection("Users").stream()
+        for doc in docs:
+            print(doc.to_dict())
         return {"test": "this is a test"}
     except Exception as error:
         print(error)

@@ -54,7 +54,6 @@
         console.log(auth)
     }
 
-    //DOESNT WORK FOR SOME REASON
     function logout(){
         signOut(auth);
         console.log("logging you out");
@@ -62,7 +61,7 @@
 
     async function testWithBackend(){
         try{
-            let response = await fetch("http://127.0.0.1:2000/", {
+            let response = await fetch("http://127.0.0.1:2000/user", {
                 headers: {
                     "AuthToken": authToken
                 }
