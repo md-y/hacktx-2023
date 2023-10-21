@@ -1,5 +1,7 @@
 import math
 from scipy.optimize import fsolve
+import openai
+import re
 
 # Converts a string with commas to a float
 def string_to_float(s):
@@ -10,32 +12,48 @@ def logistic_function(R, initial_value, L, current_value, time_difference):
     c = L / initial_value - 1
     return current_value - (L / (1 + c * math.exp(-R * time_difference)))
 
-# Calculate R for linear function given initial value, buy date, current value, and current date.
 def calculate_linear_R(initial_value, buy_date, current_value, current_date):
     return (current_value - initial_value) / (current_date - buy_date)
 
-# Calculate R for exponential function given initial value, buy date, current value, and current date.
 def calculate_exponential_R(initial_value, buy_date, current_value, current_date):
     if current_date == buy_date:
         return 0
     return (current_value / initial_value) ** (1 / (current_date - buy_date)) - 1
 
-# Calculate R for logistic function given initial value, buy date, current value, and current date.
 def calculate_logistic_R(initial_value, buy_date, current_value, current_date):
     L = 2 * initial_value  # Assumption
-    time_difference = current_date - buy_date  # This will already give T in terms of years
+    time_difference = current_date - buy_date
     
-    # Solve for R using the previously defined logistic_function
     R, = fsolve(logistic_function, 0.05, args=(initial_value, L, current_value, time_difference))
     return R
 
-# Get parameters for a function type given initial value, buy date, and current value.
+# OpenAI API Key
+openai.api_key = "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"
+
+# AI Suggested R value
+def suggest_R_value(asset, function_type):
+    """Suggests a growth/decay R-value based on the type of asset and function and sets R equal to it."""
+    messages = [{"role": "system", "content": f"Please provide a {function_type} growth/decay rate, R, for modeling {asset} appreciation/depreciation. Make sure it is realistic and varies with different assets and function types. Make the R value negative if you think the asset depreciates and positive if you think the asset appreciates. Always return an R value."}]
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages,
+        max_tokens=2000,  
+    )
+    suggested_R_value = response['choices'][0]['message']['content'].strip()
+    
+    # Extract only the numerical value using regex
+    number_matches = re.findall(r"[-+]?\d*\.\d+|\d+", suggested_R_value)
+    
+    # If no valid numbers are found, raise an exception.
+    if not number_matches:
+        raise ValueError("Failed to extract a valid number from GPT response.")
+    return float(number_matches[0])
+
 def get_parameters_from_values(function_type):
     initial_value = string_to_float(input("Enter the initial value of the asset: "))
     buy_date = float(input("Enter the buy date (as a year, e.g., 2020): "))
     current_value = string_to_float(input("Enter the current value of the asset: "))
     current_date = float(input("Enter the current date (as a year, e.g., 2023): "))
-    time_difference = current_date - buy_date  # T in terms of years
     
     if function_type == "linear":
         R, c = calculate_linear_R(initial_value, buy_date, current_value, current_date), current_value - calculate_linear_R(initial_value, buy_date, current_value, current_date) * current_date
@@ -47,89 +65,60 @@ def get_parameters_from_values(function_type):
         c, R, L = initial_value, calculate_logistic_R(initial_value, buy_date, current_value, current_date), 2 * current_value
         return c, R, L
 
-# Get parameters for linear equation
-def get_linear_parameters():
-    choice = input("Enter parameters using (1) current value or (2) initial value, buy date, and current value: ")
+def get_equation_parameters(function_type, asset):
+    choice = input("Enter parameters using:\n" 
+                   "(1) current value\n"
+                   "(2) initial value, buy date, current value, and current date\n"
+                   "(3) current value and AI-suggested R-value\n"
+                   "Enter your choice (number): ")
+    
     if choice == '1':
         R = float(input("Enter the growth/decay rate (R): "))
         c = float(input("Enter the current value of the asset (c): "))
-    elif choice == '2':
-        R, c = get_parameters_from_values("linear")
-    else:
-        print("Invalid choice. Using default method (current value).")
-        R = float(input("Enter the growth/decay rate (R): "))
-        c = float(input("Enter the current value of the asset (c): "))
-    return f"y = {R}T + {c}"
+        if function_type == "linear":
+            return R, c
+        elif function_type == "exponential":
+            return c, R
+        elif function_type == "logistic":
+            L = float(input("Enter the limit (maximum/minimum value of asset) (L): "))
+            return c, R, L
 
-# Get parameters for exponential equation
-def get_exponential_parameters():
-    choice = input("Enter parameters using (1) current value or (2) initial value, buy date, and current value: ")
-    if choice == '1':
-        c = float(input("Enter the current value of the asset (c): "))
-        R = float(input("Enter the growth/decay factor (R): "))
     elif choice == '2':
-        c, R = get_parameters_from_values("exponential")
-    else:
-        print("Invalid choice. Using default method (current value).")
-        c = float(input("Enter the current value of the asset (c): "))
-        R = float(input("Enter the growth/decay factor (R): "))
-    return f"y = {c} * (1 + {R})^T"
+        return get_parameters_from_values(function_type)
 
-# Get parameters for logistic equation
-def get_logistic_parameters():
-    choice = input("Enter parameters using (1) current value or (2) initial value, buy date, and current value: ")
-    if choice == '1':
-        c = float(input("Enter the current value of the asset (c): "))
-        R = float(input("Enter the growth/decay rate (R): "))
-        L = float(input("Enter the limit (maximum/minimum value of asset) (L): "))
-    elif choice == '2':
-        c, R, L = get_parameters_from_values("logistic")
-    else:
-        print("Invalid choice. Using default method (current value).")
-        c = float(input("Enter the current value of the asset (c): "))
-        R = float(input("Enter the growth/decay rate (R): "))
-        L = float(input("Enter the limit (maximum/minimum value of asset) (L): "))
-    return f"y = {L} / (1 + {c} * e^(-{R} * T))"
-
+    elif choice == '3':
+        current_value = string_to_float(input("Enter the current value of the asset: "))
+        R = suggest_R_value(asset, function_type)
+        if function_type == "linear":
+            c = current_value
+            return R, c
+        elif function_type == "exponential":
+            c = current_value / (1 + R)
+            return c, R
+        elif function_type == "logistic":
+            L = 2 * current_value
+            c = L / current_value - 1
+            return c, R, L
 
 def get_equation():
-    # List of common assets
-    asset_options = ["house", "car", "stock", "land", "jewelry", "custom"]
-    
-    # Ask for asset
-    print("Choose an asset from the following list:")
-    for idx, asset_choice in enumerate(asset_options, 1):
-        print(f"{idx}. {asset_choice.capitalize()}")
-    
-    asset_choice = input("Enter your choice (number or asset name): ").lower()
-    while asset_choice not in asset_options and asset_choice not in map(str, range(1, len(asset_options) + 1)):
-        print("Invalid choice. Please select from the list above.")
-        asset_choice = input("Enter your choice (number or asset name): ").lower()
-    
-    if asset_choice == "custom" or asset_choice == "6":
-        asset = input("Enter the name of your custom asset: ").lower()
-    else:
-        if asset_choice.isdigit():
-            asset = asset_options[int(asset_choice) - 1]
-        else:
-            asset = asset_choice
-
-    # Ask for function type
+    asset = input("Enter the name of your asset: ")
     function = input("Choose a function (linear/exponential/logistic): ").lower()
     while function not in ["linear", "exponential", "logistic"]:
         print("Invalid function. Please choose between 'linear', 'exponential', or 'logistic'.")
         function = input("Choose a function (linear/exponential/logistic): ").lower()
 
-    # Get parameters based on function
     if function == "linear":
-        equation = get_linear_parameters()
+        R, c = get_equation_parameters("linear", asset)
+        equation = f"y = {R}T + {c}"
+
     elif function == "exponential":
-        equation = get_exponential_parameters()
+        c, R = get_equation_parameters("exponential", asset)
+        equation = f"y = {c} * (1 + {R})^T"
+
     elif function == "logistic":
-        equation = get_logistic_parameters()
+        c, R, L = get_equation_parameters("logistic", asset)
+        equation = f"y = {L} / (1 + {c} * e^(-{R} * T))"
 
-    # Display custom equation
     print(f"Custom equation for {asset}: {equation}")
-
 
 get_equation()
