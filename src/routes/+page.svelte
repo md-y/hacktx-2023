@@ -5,20 +5,24 @@
 	import ArrowDown from '~icons/solar/double-alt-arrow-down-line-duotone';
 	import Graph from '$components/Graph.svelte';
 	import NewAssetModal from '$components/NewAssetModal.svelte';
-	import { getDoughnutData } from '$lib/assets';
+	import { getDoughnutData, getNetWorth } from '$lib/assets';
+	import { sum } from 'lodash';
 
-	const dailyChange = 69420;
+	let todayAssetData = getDoughnutData();
+	let todayNetWorth = sum(Object.values(todayAssetData));
+	let yesterdayAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000);
+	let lastMonthAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000 * 30);
+	let dailyChange = todayNetWorth - yesterdayAssetData;
+	let monthlyChange = todayNetWorth - lastMonthAssetData;
 
-	let assetData = getDoughnutData();
-
-	let changeDown: boolean = false;
+	const DAY = 24 * 60 * 60 * 1000;
 </script>
 
 <div class="main-card">
 	<div class="row">
-		<div id="money-text">
-			<h1 class:red={changeDown} class:green={!changeDown}>
-				{#if changeDown}
+		<div class="money-text">
+			<h1 class:red={dailyChange < 0} class:green={dailyChange > 0}>
+				{#if dailyChange < 0}
 					<ArrowDown />
 				{:else}
 					<ArrowUp />
@@ -27,35 +31,56 @@
 			</h1>
 			<h2>DAILY CHANGE</h2>
 		</div>
+		<div class="money-text">
+			<h1 class:red={monthlyChange < 0} class:green={monthlyChange > 0}>
+				{#if monthlyChange < 0}
+					<ArrowDown />
+				{:else}
+					<ArrowUp />
+				{/if}
+				${formatNumber(monthlyChange)}
+			</h1>
+			<h2>MONTHLY CHANGE</h2>
+		</div>
 		<div id="doughnut">
-			<Doughnut data={assetData} />
+			<Doughnut data={todayAssetData} />
 		</div>
 	</div>
 	<div class="row">
 		<div id="net-worth-graph">
 			<h1>NET WORTH</h1>
-			<Graph xValues={[0, 100, 1]} yValues={(v) => v * v} />
+			<Graph
+				xValues={[-365, 0, 1]}
+				yValues={(v) => getNetWorth(Date.now() + v * DAY)}
+				startDate={new Date(Date.now() - 365 * DAY)}
+			/>
 		</div>
 	</div>
 </div>
 
 <style lang="scss">
-	$card-padding: 4rem;
-	$x-padding: 8rem;
 	$doughnut-width: 35rem;
-	$big-text: 4rem;
-	$smaller-text: 2.5rem;
+	$big-text: 6vmin;
+	$smaller-text: 4vmin;
 	$trans-duration: 1s;
 
 	.main-card {
 		position: absolute;
-		inset: $card-padding;
+		top: 5vh;
+		bottom: 5vh;
+		left: 5vw;
+		right: 5vw;
 		background-color: #022842;
 		border-radius: 2rem;
 		filter: drop-shadow(2px 2px 2px #000000);
 
 		display: flex;
 		flex-direction: column;
+
+		padding-left: 4vw;
+		padding-right: 4vw;
+		padding-top: 2vh;
+		padding-bottom: 2vh;
 	}
 
 	.row {
@@ -63,14 +88,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
-		padding-left: $x-padding;
-		padding-right: $x-padding;
+		gap: 0.5rem;
 	}
 
 	#net-worth-graph {
 		width: 100%;
-		height: calc(100vh - $card-padding * 3 - $doughnut-width - $smaller-text);
+		height: 25vh;
 		animation: fadeIn $trans-duration;
 
 		h1 {
@@ -82,11 +105,11 @@
 
 	#doughnut {
 		position: relative;
-		width: $doughnut-width;
-		height: $doughnut-width;
+		width: 30vw;
+		height: 30vw;
 	}
 
-	#money-text {
+	.money-text {
 		h1 {
 			color: white;
 			font-size: $big-text;
