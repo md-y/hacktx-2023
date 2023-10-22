@@ -1,4 +1,5 @@
 <script>
+	import { user } from '$lib/store';
 	import { Form, Button, Modal, TextInput } from 'carbon-components-svelte';
 
 	export let open = false;
@@ -20,7 +21,10 @@
 			payment_date: todayDate
 		};
 
-		bill['payment_amount'] = liabilityValue;
+		user.set({
+			...$user,
+			bills: $user.bills.concat([bill])
+		});
 	}
 </script>
 
@@ -35,10 +39,8 @@
 		<TextInput
 			id="liabilityValue"
 			labelText="Liability Value"
-			value={liabilityValue}
-			on:input={(event) => {
-				liabilityValue = event.target.value;
-			}}
+			bind:value={liabilityValue}
+			type="number"
 		/>
 		<div class="button-group">
 			<Button on:click={closeModal}>Cancel</Button>

@@ -1,4 +1,6 @@
-<script lang="ts">
+<script>
+	// @ts-nocheck
+
 	import Doughnut from '$components/Doughnut.svelte';
 	import { formatNumber } from '$lib/util.js';
 	import ArrowUp from '~icons/solar/double-alt-arrow-up-line-duotone';
@@ -9,44 +11,46 @@
 	import _ from 'lodash';
 	import { TooltipIcon } from 'carbon-components-svelte';
 	import BrowseAssetsIcon from '~icons/material-symbols/insert-chart-outline';
-	import AddAssetIcon from '~icons/material-symbols/add-rounded';
+	import AddLiabilityIcon from '~icons/material-symbols/money-off-rounded';
+	import AddAssetIcon from '~icons/material-symbols/attach-money';
 	import { base } from '$app/paths';
-	import {signOut} from 'firebase/auth';
-    import {auth} from '../../lib/util.js';
-	import { goto } from '$app/navigation';
+	import NewLiabilityModal from '$components/NewLiabilityModal.svelte';
+	import { user } from '$lib/store';
 
-	let todayAssetData = getDoughnutData();
-	let todayNetWorth = _.sum(Object.values(todayAssetData));
-	let yesterdayAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000);
-	let lastMonthAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000 * 30);
-	let dailyChange = todayNetWorth - yesterdayAssetData;
-	let monthlyChange = todayNetWorth - lastMonthAssetData;
+	let todayAssetData;
+	let dailyChange;
+	let monthlyChange;
+	$: {
+		todayAssetData = getDoughnutData($user);
+		let todayNetWorth = _.sum(Object.values(todayAssetData));
+		let yesterdayAssetData = getNetWorth($user, Date.now() - 24 * 60 * 60 * 1000);
+		let lastMonthAssetData = getNetWorth($user, Date.now() - 24 * 60 * 60 * 1000 * 30);
+		dailyChange = todayNetWorth - yesterdayAssetData;
+		monthlyChange = todayNetWorth - lastMonthAssetData;
+	}
 
 	const DAY = 24 * 60 * 60 * 1000;
 
-	let openModal = false;
-
-	function logout(){
-		signOut(auth); 
-		goto('/');
-	}
-
+	let openAssetModal = false;
+	let openLiabilityModal = false;
 </script>
 
-<NewAssetModal bind:open={openModal} />
+<NewAssetModal bind:open={openAssetModal} />
+<NewLiabilityModal bind:open={openLiabilityModal} />
 
 <div class="main-card">
 	<div class="row">
 		<div class="icons">
 			<h1>Am I Broke?</h1>
-			
-			<a on:click={() => (openModal = true)}>
+			<a on:click={() => (openAssetModal = true)}>
 				<TooltipIcon icon={AddAssetIcon} tooltipText={'Add new asset'} />
+			</a>
+			<a on:click={() => (openLiabilityModal = true)}>
+				<TooltipIcon icon={AddLiabilityIcon} tooltipText={'Add new liability'} />
 			</a>
 			<a href="{base}/assets">
 				<TooltipIcon icon={BrowseAssetsIcon} tooltipText={'Browse all assets'} />
 			</a>
-			<button on:click={logout}>Logout</button>
 		</div>
 		<div class="money-text">
 			<h1 class:red={dailyChange < 0} class:green={dailyChange > 0}>
@@ -77,11 +81,13 @@
 	<div class="row">
 		<div id="net-worth-graph">
 			<h1>NET WORTH</h1>
-			<Graph
-				xValues={[-365, 0, 1]}
-				yValues={(v) => getNetWorth(Date.now() + v * DAY)}
-				startDate={new Date(Date.now() - 365 * DAY)}
-			/>
+			{#key todayAssetData}
+				<Graph
+					xValues={[-365, 0, 1]}
+					yValues={(v) => getNetWorth($user, Date.now() + v * DAY)}
+					startDate={new Date(Date.now() - 365 * DAY)}
+				/>
+			{/key}
 		</div>
 	</div>
 </div>

@@ -35,8 +35,10 @@
 	}
 
 	let canvasElem: HTMLCanvasElement;
+	let chart: any;
 	$: if (canvasElem) {
-		new Chart(canvasElem, {
+		if (chart) chart.destroy();
+		chart = new Chart(canvasElem, {
 			type: 'doughnut',
 			data: {
 				labels: labels,

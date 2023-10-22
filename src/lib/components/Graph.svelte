@@ -30,8 +30,10 @@
 	export let options: ChartOptions<'line'> = {};
 
 	let canvasElem: HTMLCanvasElement;
+	let chart: any;
 	$: if (canvasElem) {
-		new Chart(canvasElem, {
+		if (chart) chart.destroy();
+		chart = new Chart(canvasElem, {
 			type: 'line',
 			data: {
 				labels: xValues,

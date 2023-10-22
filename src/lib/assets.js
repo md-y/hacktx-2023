@@ -1,16 +1,13 @@
 // @ts-nocheck
 
 import _ from 'lodash';
-import { get } from 'svelte/store';
-import { user } from './store';
 
 /**
+ * @param {*} userData
  * @param {Date | number} time
  * @returns {Record<string, number>}
  */
-export function getDoughnutData(time = Date.now()) {
-	const userData = get(user);
-
+export function getDoughnutData(userData, time = Date.now()) {
 	/**
 	 * @type {Record<string, number>}
 	 */
@@ -29,19 +26,26 @@ export function getDoughnutData(time = Date.now()) {
 		userData.deposits.filter((d) => new Date(d.date) > time).map((d) => d.amount)
 	);
 
-	assetTypes['Monetary Assets'] = currentBalance + futureWithdrawals - futureDeposits;
+	currentBalance += futureWithdrawals - futureDeposits;
 
-	// TODO: Liabilities?
+	const futureLiabilities = _.sum(
+		userData.bills.filter((b) => new Date(b.payment_date) > time).map((b) => b.payment_amount)
+	);
+
+	currentBalance += futureLiabilities;
+
+	assetTypes['Monetary Assets'] = currentBalance;
 
 	return assetTypes;
 }
 
 /**
+ * @param {*} userData
  * @param {Date | number} time
  * @returns {number}
  */
-export function getNetWorth(time = Date.now()) {
-	const data = getDoughnutData(time);
+export function getNetWorth(userData, time = Date.now()) {
+	const data = getDoughnutData(userData, time);
 	return _.sum(Object.values(data));
 }
 
@@ -66,7 +70,7 @@ export function getCurrentAssetValue(asset, time = Date.now()) {
 	const minmax = asset.min_max_value;
 	let val = 0;
 
-	switch (asset.function_type) {
+	switch (asset.function_type.toLowerCase()) {
 		case 'exponential':
 			val = init * Math.pow(1 + r, t);
 			break;

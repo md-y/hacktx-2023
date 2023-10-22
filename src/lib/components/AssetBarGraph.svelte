@@ -36,8 +36,10 @@
 	const colors = ['#00759C', '#9EF1FF', '#82DAFA', '#4D8CA8', '#0F5E9F', '#17ABC4'];
 
 	let canvasElem: HTMLCanvasElement;
+	let chart: any;
 	$: if (canvasElem) {
-		new Chart(canvasElem, {
+		if (chart) chart.destroy();
+		chart = new Chart(canvasElem, {
 			type: 'bar',
 			data: {
 				labels: labels,
