@@ -69,9 +69,7 @@
 
 	function calculateLogisticR(initial_value, buy_date, current_value, current_date, min_max_value) {
 		return (
-			(Math.log(min_max_value / current_value / initial_value) /
-				yearDifference(current_date, buy_date)) *
-			-1
+			Math.log(((min_max_value/current_value) - 1)/initial_value)/(yearDifference(current_date, buy_date))
 		);
 	}
 
