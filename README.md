@@ -18,6 +18,6 @@ We had significant trouble setting up CORS with our back end server, and getting
 We're looking forward to expanding on the accuracy of our assets; specifically, showcasing our users' market liquidity, and perhaps their personal accounting liquidity. In the name of improved accessibility and understanding of personal finances for anyone willing to download AmIBroke.tech, we also hope to provide some resources on increasing one's liquidity, and enhancing their personal finance management capabilities as a whole.
 
 
-### [**View our work on** GitHub](https://github.com/md-y/hacktx-2023)
-### [**View our design process on** Canva](https://www.canva.com/design/DAFx_Fiv7yI/k0eKUoiQUjFk-PY33ArUoQ/edit?utm_content=DAFx_Fiv7yI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+### [View our work on Devpost](https://github.com/md-y/hacktx-2023)
+### [View our design process on Canva](https://www.canva.com/design/DAFx_Fiv7yI/k0eKUoiQUjFk-PY33ArUoQ/edit?utm_content=DAFx_Fiv7yI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 ---
