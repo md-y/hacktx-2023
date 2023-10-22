@@ -231,6 +231,7 @@
 		const userData = $user;
 		userData['assets'].push(asset);
 		user.set(userData);
+		
 		open = false;
 		resetForm();
 	}
