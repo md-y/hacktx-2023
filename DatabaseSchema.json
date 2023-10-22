@@ -1,19 +1,11 @@
 {
     "User ID": 0,
-    "Accounts": {
-        "Savings": {
-            "Balance": 0,
-            "Rewards": 0
-        },
-        "Checking": {
-            "Balance": 0,
-            "Rewards": 0
-        },
-        "Credit Card": {
-            "Balance": 0,
-            "Rewards": 0
-        }
-    },
+    "SavingsAccountBalance": 0,
+    "CheckingAccountBalance": 0,
+    "CreditCardAccountBalance": 0,
+    "SavingsAccountRewards": 0,
+    "CheckingAccountRewards": 0,
+    "CreditCardAccountRewards": 0,
     "Bills": [
         {
             "Payment Date": "10/21/2023",
