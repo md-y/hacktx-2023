@@ -76,9 +76,6 @@
 		}
 	}
 
-	const math = require('mathjs');
-	const fetch = require('node-fetch'); 
-
 	function stringToFloat(s) {
   		return parseFloat(s.replace(',', ''));
 	}
