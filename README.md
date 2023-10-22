@@ -1,4 +1,3 @@
-# **HackTX 2023**
 # Welcome to AmIBroke.tech
 ---
 ## Inspiration
