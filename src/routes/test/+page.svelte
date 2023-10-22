@@ -3,7 +3,7 @@
 
 	// Import the functions you need from the SDKs you need
 	import { signInWithPopup, signOut } from 'firebase/auth';
-    import {auth, provider, app} from '../..util.js';
+	import { auth, provider, app } from '../../lib/util.js';
 	import AES from 'crypto-js/aes';
 	import CryptoJS from 'crypto-js';
 
