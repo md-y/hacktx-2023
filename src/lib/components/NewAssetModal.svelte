@@ -1,6 +1,6 @@
 <script>
 	import { Modal, Form, TextInput, NumberInput, Dropdown, Button } from 'carbon-components-svelte';
-	import { user } from '../store.js';
+	import { user, authToken } from '../store.js';
 	import Graph from './Graph.svelte';
 	export let open = false;
 
@@ -38,7 +38,6 @@
 	let currentStep = 0;
 
 	function nextStep() {
-		console.log(selectedEquationType);
 		if (currentStep == 0 && !assetType) return;
 		else if (currentStep == 1 && !assetName) return;
 		currentStep += 1;
@@ -112,7 +111,6 @@
 	}
 
 	async function suggestLValue(asset) {
-		console.log('Started L Value FUnction');
 		const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 		const API_KEY = 'apikey';
 
@@ -145,7 +143,6 @@
 			if (!numberMatches) {
 				throw new Error('Failed to extract a valid number from GPT response.');
 			}
-			console.log(parseFloat(numberMatches[0]));
 			return parseFloat(numberMatches[0]);
 		}
 	}
@@ -208,19 +205,13 @@
 		}
 		// Input current value, and have an AI-suggested R value
 		else if (selectedParamMethod == 2) {
-			console.log(selectedEquationType);
-			console.log('HERE 1');
 			asset['initial_value'] = currentValue;
 			loading = true;
 			growthRateR = await suggestRValue(assetName + ' of type ' + assetType, selectedEquationType);
 			asset['r'] = growthRateR;
 			asset['starting_date'] = todayDate;
-			console.log('HERE 2');
 
-			console.log(selectedEquationType);
-			console.log(selectedEquationType == 'Logistic');
 			if (selectedEquationType == 'Logistic') {
-				console.log('HERE 3');
 				loading = true;
 				minMax = await suggestLValue(assetName + ' of type ' + assetType);
 				asset['min_max_value'] = minMax;
@@ -231,9 +222,27 @@
 		const userData = $user;
 		userData['assets'].push(asset);
 		user.set(userData);
-		
+		pushData()
+
 		open = false;
 		resetForm();
+	}
+
+	async function pushData() {
+		try {
+			const userData = $user;
+			const at = $authToken;
+			let response = await fetch('https://helloworld-feagyby2hq-uc.a.run.app/user', {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					AuthToken: at
+				},
+				body: JSON.stringify(userData)
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 </script>
 

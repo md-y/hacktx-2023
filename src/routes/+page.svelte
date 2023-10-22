@@ -4,7 +4,7 @@
     // Import the functions you need from the SDKs you need
 	import {signInWithPopup, signOut , signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
     import {auth, provider} from '../lib/util.js';
-    import {user, wirelessMode} from '../lib/store.js';
+    import {user, wirelessMode, authToken} from '../lib/store.js';
 
 	import AES from 'crypto-js/aes';
 	import CryptoJS from 'crypto-js';
@@ -14,7 +14,6 @@
     //my code
 
     let loggedIn = false;
-	let authToken = undefined;
 	let uid = undefined;
     let email = "";
     let password = "";
@@ -26,22 +25,23 @@
 		loggedIn = user ? true : false;
 		if (loggedIn) {
 			uid = user.uid;
-			if (authToken == undefined) {
+			if ($authToken == "") {
 				await fetchAuthToken();
 			}
             await getData();
             goto('/dashboard');
 		} else {
 			uid = undefined;
-			authToken = undefined;
+			$authToken = "";
 		}
 	});
 
     async function getData() {
 		try {
+            const at = $authToken;
 			let response = await fetch('https://helloworld-feagyby2hq-uc.a.run.app/user', {
 				headers: {
-					AuthToken: authToken
+					AuthToken: at
 				}
 			});
 			const userData = await response.json();
@@ -86,8 +86,8 @@
 
     async function fetchAuthToken() {
 		if (auth.currentUser) {
-			authToken = await auth.currentUser.getIdToken(true);
-			authToken = authToken;
+			const at = await auth.currentUser.getIdToken(true);
+			$authToken = at;
 		}
 	}
 

@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const wirelessMode = writable(false);
+export const authToken = writable("");
 
 export const user = writable({
 	assets: [
