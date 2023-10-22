@@ -35,6 +35,10 @@
 
 	const colors = ['#00759C', '#9EF1FF', '#82DAFA', '#4D8CA8', '#0F5E9F', '#17ABC4'];
 
+	function deleteAsset(name: string) {
+		console.log(name);
+	}
+
 	let canvasElem: HTMLCanvasElement;
 	let chart: any;
 	$: if (canvasElem) {
@@ -81,7 +85,16 @@
 							if (!labels[ctx.dataIndex].startsWith('> ')) return 5;
 							return 0;
 						},
-						borderRadius: 20
+						borderRadius: 20,
+						hoverBackgroundColor(ctx, options) {
+							let index = 0;
+							for (let i = ctx.dataIndex; i >= 0; i--) {
+								if (!labels[i].startsWith('> ')) index++;
+							}
+							const normalColor = colors[index % colors.length];
+							if (!labels[ctx.dataIndex].startsWith('> ')) return normalColor;
+							else return '#ff3131';
+						}
 					}
 				},
 				scales: {
@@ -122,6 +135,13 @@
 								return formatNumber(tickValue as number);
 							}
 						}
+					}
+				},
+				onClick(event, elements, chart) {
+					if (elements.length > 0) {
+						const label = labels[elements[0].index];
+						if (!label.startsWith('> ')) return;
+						deleteAsset(label.slice(2));
 					}
 				}
 			}
