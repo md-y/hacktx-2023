@@ -29,6 +29,7 @@
 <div class="main-card">
 	<div class="row">
 		<div class="icons">
+			<h1>Am I Broke?</h1>
 			<a on:click={() => (openModal = true)}>
 				<TooltipIcon icon={AddAssetIcon} tooltipText={'Add new asset'} />
 			</a>
@@ -115,6 +116,14 @@
 
 		display: flex;
 		gap: 1rem;
+		align-items: center;
+
+		h1 {
+			color: white;
+			font-weight: 400;
+			font-size: $big-text * 1.25;
+			margin-right: 2rem;
+		}
 
 		:global(svg) {
 			color: white;
