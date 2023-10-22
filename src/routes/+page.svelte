@@ -4,7 +4,7 @@
     // Import the functions you need from the SDKs you need
 	import {signInWithPopup, signOut , signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
     import {auth, provider} from '../lib/util.js';
-    import {user} from '../lib/store.js';
+    import {user, wirelessMode} from '../lib/store.js';
 
 	import AES from 'crypto-js/aes';
 	import CryptoJS from 'crypto-js';
@@ -60,9 +60,13 @@
 			'load',
 			() => {
 				//this updates the userData
-				userData = JSON.parse(
-					decryptData(reader.result, decryptPassword).toString(CryptoJS.enc.Utf8)
+				const userData = JSON.parse(
+					decryptData(reader.result, encryptedFilePassword).toString(CryptoJS.enc.Utf8)
 				);
+
+                $user = userData;
+                $wirelessMode = true;
+                goto("/dashboard")
 			},
 			false
 		);

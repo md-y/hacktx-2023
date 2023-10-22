@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store';
 
+export const wirelessMode = writable(false);
+
 export const user = writable({
 	assets: [
 		{

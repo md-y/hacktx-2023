@@ -20,6 +20,9 @@
 	import { signOut } from 'firebase/auth';
 	import { auth } from '../../lib/util.js';
 	import LogoutIcon from '~icons/material-symbols/logout';
+	import DownloadIcon from '~icons/material-symbols/download';
+	import AES from 'crypto-js/aes';
+	import CryptoJS from 'crypto-js';
 
 	let todayAssetData;
 	let dailyChange;
@@ -42,6 +45,37 @@
 		signOut(auth);
 		goto('/');
 	}
+
+	function getDataEncryptionPass(){
+		let pass = prompt("Please enter your password to encrypt you data:", "");
+		if(pass != null && pass != "")
+			downloadData(pass)
+	}
+
+	function downloadData(pass) {
+		//code to encrypt file
+		const userData = $user;
+		let encryptedData = encryptData(JSON.stringify(userData), pass).toString();
+
+		//code to download file
+		var element = document.createElement('a');
+		element.setAttribute(
+			'href',
+			'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData)
+		);
+		element.setAttribute('download', 'my_secure_financial_data.txt');
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+	}
+
+	function encryptData(data, key) {
+		return AES.encrypt(data, key);
+	}
 </script>
 
 <NewAssetModal bind:open={openAssetModal} />
@@ -62,6 +96,9 @@
 			</a>
 			<a on:click={() => logout()}>
 				<TooltipIcon icon={LogoutIcon} tooltipText={'Logout'} />
+			</a>
+			<a on:click={() => getDataEncryptionPass()}>
+				<TooltipIcon icon={DownloadIcon} tooltipText={'Download data'} />
 			</a>
 		</div>
 		<div class="money-text">
