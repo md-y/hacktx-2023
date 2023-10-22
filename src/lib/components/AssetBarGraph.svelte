@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getCurrentAssetValue } from '$lib/assets';
-	import { user } from '$lib/store';
+	import { user, authToken } from '$lib/store';
 	import { formatNumber } from '$lib/util';
 	import { Chart } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -35,9 +35,36 @@
 
 	const colors = ['#00759C', '#9EF1FF', '#82DAFA', '#4D8CA8', '#0F5E9F', '#17ABC4'];
 
-	function deleteAsset(name: string) {
-		console.log(name);
-	}
+	// async function deleteAsset(name: string) {
+	// 	let userData = $user;
+	// 	let assetsarray = userData['assets'];
+	// 	console.log(assetsarray.length);
+	// 	for(let i = 0; i < assetsarray.length; i++){
+	// 		if(assetsarray[i]['asset_name'] == name){
+	// 			assetsarray.splice(i, 1);
+	// 			i--;
+	// 		}
+	// 	}
+	// 	$user = userData;
+	// 	await pushData();
+	// }
+
+	// async function pushData() {
+	// 	try {
+	// 		let userData = $user;
+	// 		let at = $authToken;
+	// 		let response = await fetch('https://helloworld-feagyby2hq-uc.a.run.app/user', {
+	// 			method: 'PUT',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 				AuthToken: at
+	// 			},
+	// 			body: JSON.stringify(userData)
+	// 		});
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
 
 	let canvasElem: HTMLCanvasElement;
 	let chart: any;
