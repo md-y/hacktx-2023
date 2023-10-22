@@ -16,6 +16,10 @@
 	import { base } from '$app/paths';
 	import NewLiabilityModal from '$components/NewLiabilityModal.svelte';
 	import { user } from '$lib/store';
+	import { goto } from '$app/navigation';
+	import { signOut } from 'firebase/auth';
+	import { auth } from '../../lib/util.js';
+	import LogoutIcon from '~icons/material-symbols/logout';
 
 	let todayAssetData;
 	let dailyChange;
@@ -33,6 +37,11 @@
 
 	let openAssetModal = false;
 	let openLiabilityModal = false;
+
+	function logout() {
+		signOut(auth);
+		goto('/');
+	}
 </script>
 
 <NewAssetModal bind:open={openAssetModal} />
@@ -50,6 +59,9 @@
 			</a>
 			<a href="{base}/assets">
 				<TooltipIcon icon={BrowseAssetsIcon} tooltipText={'Browse all assets'} />
+			</a>
+			<a on:click={() => logout()}>
+				<TooltipIcon icon={LogoutIcon} tooltipText={'Logout'} />
 			</a>
 		</div>
 		<div class="money-text">
