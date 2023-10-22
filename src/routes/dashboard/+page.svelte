@@ -46,10 +46,9 @@
 		goto('/');
 	}
 
-	function getDataEncryptionPass(){
-		let pass = prompt("Please enter your password to encrypt you data:", "");
-		if(pass != null && pass != "")
-			downloadData(pass)
+	function getDataEncryptionPass() {
+		let pass = prompt('Please enter your password to encrypt you data:', '');
+		if (pass != null && pass != '') downloadData(pass);
 	}
 
 	function downloadData(pass) {
@@ -178,7 +177,6 @@
 		position: absolute;
 		left: 4vw;
 		top: 4vw;
-		width: 100%;
 
 		z-index: 100;
 
