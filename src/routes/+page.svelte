@@ -9,8 +9,10 @@
 	import _ from 'lodash';
 	import { TooltipIcon } from 'carbon-components-svelte';
 	import BrowseAssetsIcon from '~icons/material-symbols/insert-chart-outline';
-	import AddAssetIcon from '~icons/material-symbols/add-rounded';
+	import AddLiabilityIcon from '~icons/material-symbols/money-off-rounded';
+	import AddAssetIcon from '~icons/material-symbols/attach-money';
 	import { base } from '$app/paths';
+	import NewLiabilityModal from '$components/NewLiabilityModal.svelte';
 
 	let todayAssetData = getDoughnutData();
 	let todayNetWorth = _.sum(Object.values(todayAssetData));
@@ -21,17 +23,22 @@
 
 	const DAY = 24 * 60 * 60 * 1000;
 
-	let openModal = false;
+	let openAssetModal = false;
+	let openLiabilityModal = false;
 </script>
 
-<NewAssetModal bind:open={openModal} />
+<NewAssetModal bind:open={openAssetModal} />
+<NewLiabilityModal bind:open={openLiabilityModal} />
 
 <div class="main-card">
 	<div class="row">
 		<div class="icons">
 			<h1>Am I Broke?</h1>
-			<a on:click={() => (openModal = true)}>
+			<a on:click={() => (openAssetModal = true)}>
 				<TooltipIcon icon={AddAssetIcon} tooltipText={'Add new asset'} />
+			</a>
+			<a on:click={() => (openLiabilityModal = true)}>
+				<TooltipIcon icon={AddLiabilityIcon} tooltipText={'Add new liability'} />
 			</a>
 			<a href="{base}/assets">
 				<TooltipIcon icon={BrowseAssetsIcon} tooltipText={'Browse all assets'} />
