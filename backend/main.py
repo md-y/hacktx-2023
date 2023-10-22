@@ -1,4 +1,4 @@
-#Authenticate and connect withe firestore
+import os
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 
@@ -7,13 +7,8 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 usersRef = db.collection("Users")
 
-#FLASK SERVER
-from flask import Flask, json, request
-from flask_cors import CORS, cross_origin
-
-api = Flask(__name__)
-cors = CORS(api)
-api.config['CORS_HEADERS'] = 'Content-Type'
+from flask import Flask, request
+app = Flask(__name__)
 
 #dict format
 testUserData = {
@@ -62,9 +57,6 @@ testUserData = {
   ]
 }
 
-
-
-
 #Checks if user is authenticated
 def check_auth():
     token = request.headers.get("Authtoken", None)
@@ -74,8 +66,7 @@ def check_auth():
     uid = decoded_token['uid']
     return uid
 
-@api.route('/user', methods=['GET'])
-@cross_origin()
+@app.route('/user', methods=['GET'])
 def get_user():
     #Add this line to all things
     uid = check_auth()
@@ -92,9 +83,8 @@ def get_user():
     except Exception as error:
         print(error)
         return {"Error": "Error"}, 400
-    
-@api.route('/user', methods=['POST', 'PUT'])
-@cross_origin()
+
+@app.route('/user', methods=['POST', 'PUT'])
 def post_user():
     #Add this line to all things
     uid = check_auth()
@@ -121,8 +111,6 @@ def post_user():
     except Exception as error:
         print(error)
         return {"Error": "Error"}, 400
-    
 
-    
-if __name__ == '__main__':
-    api.run(port=2000) 
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
