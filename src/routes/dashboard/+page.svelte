@@ -143,6 +143,8 @@
 		top: 4vw;
 		width: 100%;
 
+		z-index: 100;
+
 		display: flex;
 		gap: 1rem;
 		align-items: center;
