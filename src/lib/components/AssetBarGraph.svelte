@@ -26,9 +26,11 @@
 			const sortedArr = _.sortBy(arr, (a) => a.current_amount).reverse();
 			const assetValues = sortedArr.map((a) => a.current_amount);
 			const assetLabels = sortedArr.map((a) => `> ${a.asset_name}`);
+			const totalSum = _.sum(assetValues);
+			if (totalSum == 0) continue;
 			if (!focusType) {
 				labels.push(i);
-				values.push(_.sum(assetValues));
+				values.push(totalSum);
 			}
 			labels = labels.concat(assetLabels);
 			values = values.concat(assetValues);
