@@ -2,6 +2,7 @@
 	import { numberWithCommas } from '$lib/util';
 	import Chart, { type ChartOptions } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
+	import { fade } from 'svelte/transition';
 
 	export let data: Record<string, number>;
 
@@ -49,7 +50,7 @@
 			options: {
 				plugins: {
 					datalabels: {
-						color: 'black',
+						color: 'white',
 						align: 'end',
 						anchor: 'end',
 						formatter(value, context) {
@@ -78,7 +79,9 @@
 				borderWidth: 0,
 				layout: {
 					padding: 100
-				}
+				},
+				cutout: '75%',
+				backgroundColor: ['#17ABC4', '#82DAFA', '#00759C', '#9EF1FF', '#4D8CA8', '#0F5E9F']
 			} as ChartOptions<'doughnut'>
 		});
 	}
@@ -86,7 +89,10 @@
 
 <div class="container">
 	<div class="overlay">
-		<h1>${numberWithCommas(totalValue.toString())}</h1>
+		<div in:fade={{ delay: 250, duration: 300 }}>
+			<h1>${numberWithCommas(totalValue.toString())}</h1>
+			<h2>TOTAL NET WORTH</h2>
+		</div>
 	</div>
 	<canvas bind:this={canvasElem} />
 </div>
@@ -106,5 +112,39 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		color: white;
+
+		pointer-events: none;
+
+		div {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+			* {
+				margin: 0;
+			}
+
+			h1 {
+				font-size: 3rem;
+			}
+
+			h2 {
+				font-size: 1.2rem;
+			}
+		}
+
+		animation: fadeIn 1s;
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

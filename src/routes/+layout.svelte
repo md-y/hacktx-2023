@@ -5,7 +5,7 @@
 <svelte:head>
 	<link
 		rel="stylesheet"
-		href="https://fonts.googleapis.com/css?family=Roboto:regular,bold&display=swap"
+		href="https://fonts.googleapis.com/css?family=Roboto:regular,bold|Be+Vietnam+Pro:Light,regular,bold&display=swap"
 	/>
 </svelte:head>
 
@@ -21,7 +21,7 @@
 	:global(h4),
 	:global(h5),
 	:global(h6) {
-		font-family: 'Roboto', sans-serif;
+		font-family: 'Be Vietnam Pro', sans-serif;
 	}
 
 	#bg {
