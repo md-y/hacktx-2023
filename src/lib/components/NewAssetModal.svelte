@@ -76,7 +76,7 @@
 
     async function suggestRValue(asset, function_type) {
         const API_ENDPOINT = "https://api.openai.com/v1/chat/completions"; 
-        const API_KEY = "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";
+        const API_KEY = "apikey";
 
 		const messages = [{
             "role": "system",
@@ -111,7 +111,7 @@
 	async function suggestLValue(asset) {
 		console.log("Started L Value FUnction");
 		const API_ENDPOINT = "https://api.openai.com/v1/chat/completions"; 
-        const API_KEY = "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";
+        	const API_KEY = "apikey";
 
 		if (selectedEquationType === "Logistic") {
 			const messages = [{
