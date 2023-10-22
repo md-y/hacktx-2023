@@ -14,6 +14,7 @@
 	let currentDate = nowDate.getMonth() + 1 + '/' + nowDate.getDate() + '/' + nowDate.getFullYear();
 	let minMax = 0;
 	let loading = false;
+	let asset = {};
 
 	let equationTypes = [
 		{ text: 'Linear', value: 'Linear' },
@@ -173,10 +174,10 @@
 		return (year1 - year2) / (1000 * 60 * 60 * 24) / 365;
 	}
 
-	async function confirmForm() {
+	async function confirmAsset() {
 		const date = new Date();
 		const todayDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
-		let asset = {
+		asset = {
 			asset_name: assetName,
 			asset_type: assetType,
 			function_type: selectedEquationType,
@@ -196,10 +197,17 @@
 			asset['initial_value'] = initialValue;
 			if (selectedEquationType == 'Exponential') {
 				asset['r'] = calculateExponentialR(initialValue, buyDate, currentValue, todayDate);
+				growthRateR = asset['r'];
+				growthRateR = growthRateR;
 			} else if (selectedEquationType == 'Logistic') {
 				asset['r'] = calculateLogisticR(initialValue, buyDate, currentValue, todayDate, minMax);
+				growthRateR = asset['r'];
+				growthRateR = growthRateR;
 			} else if (selectedEquationType == 'Linear') {
+				console.log("run me")
 				asset['r'] = calculateLinearR(initialValue, buyDate, currentValue, todayDate);
+				growthRateR = asset['r'];
+				growthRateR = growthRateR;
 			}
 			asset['starting_date'] = buyDate;
 		}
@@ -217,7 +225,9 @@
 				asset['min_max_value'] = minMax;
 			}
 		}
+	}
 
+	async function confirmForm(){
 		loading = false;
 		const userData = $user;
 		userData['assets'].push(asset);
@@ -247,6 +257,7 @@
 </script>
 
 <Modal
+	preventCloseOnClickOutside
 	bind:open
 	modalHeading="Asset Details"
 	on:click:button--secondary={closeModal}
@@ -374,7 +385,7 @@
 			{#if currentStep == 4}
 				<Button
 					on:click={() => {
-						nextStep();
+						nextStep();confirmAsset();
 					}}>Next</Button
 				>
 			{/if}
