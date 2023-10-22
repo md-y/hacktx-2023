@@ -76,7 +76,7 @@
 
 	async function suggestRValue(asset, function_type) {
 		const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-		const API_KEY = 'apikey';
+		const API_KEY = window.localStorage.getItem('openai_api_key') ?? 'apikey';
 
 		const messages = [
 			{
@@ -112,7 +112,7 @@
 
 	async function suggestLValue(asset) {
 		const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-		const API_KEY = 'apikey';
+		const API_KEY = window.localStorage.getItem('openai_api_key') ?? 'apikey';
 
 		if (selectedEquationType === 'Logistic') {
 			const messages = [
