@@ -56,32 +56,11 @@
 	}
 
 	function login() {
-		try {
-			signInWithPopup(auth, provider);
-			fetchAuthToken();
-			console.log('logging you in');
-			console.log(auth);
-		} catch (error) {
-			userData = {
-				assets: [
-				],
-				bills: [
-				],
-				checking_account_balance: 0,
-				checking_account_reward: 0,
-				credit_card_balance: 0,
-				credit_card_rewards: 0,
-				deposits: [
-				],
-				monthly_bills: [
-				],
-				savings_account_balance: 0,
-				savings_account_rewards: 0,
-				withdrawls: [
-				]
-			};
-			postData();
-		}
+		signInWithPopup(auth, provider);
+		fetchAuthToken();
+		loginToBackend();
+		console.log('logging you in');
+		console.log(auth);
 	}
 
 	function logout() {

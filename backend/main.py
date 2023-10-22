@@ -1,5 +1,6 @@
 import os
 import firebase_admin
+from flask_cors import CORS, cross_origin
 from firebase_admin import credentials, firestore, auth
 
 cred = credentials.Certificate("./authenticationKey.json")
@@ -9,6 +10,8 @@ usersRef = db.collection("Users")
 
 from flask import Flask, request
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 #dict format
 testUserData = {
@@ -57,6 +60,21 @@ testUserData = {
   ]
 }
 
+newUserData = {
+  "assets": [],
+  "bills": [],
+  "checking_account_balance": 0,
+  "checking_account_reward": 0,
+  "credit_card_balance": 0,
+  "credit_card_rewards": 0,
+  "deposits": [],
+  "monthly_bills": [],
+  "savings_account_balance": 0,
+  "savings_account_rewards": 0,
+  "uid": "",
+  "withdrawls": []
+}
+
 #Checks if user is authenticated
 def check_auth():
     token = request.headers.get("Authtoken", None)
@@ -67,24 +85,38 @@ def check_auth():
     return uid
 
 @app.route('/user', methods=['GET'])
+@cross_origin()
 def get_user():
     #Add this line to all things
     uid = check_auth()
     if uid == "":
+        print("bad uid")
         return {"Error": "Error"}, 400
     
     try:
         #for test just get and print a user
         users = usersRef.where("uid", "==", uid).stream()
-        user = next(users).to_dict()
-        del user['uid']
-        return user
+        i = 0
+        for u in users:
+            user = u
+            i+=1
+        if i == 0:
+            user = newUserData
+            user['uid'] = uid
+            usersRef.document().set(user)
+            del user['uid']
+            return user
+        else:
+            user = user.to_dict()
+            del user['uid']
+            return user
     
     except Exception as error:
         print(error)
         return {"Error": "Error"}, 400
 
 @app.route('/user', methods=['POST', 'PUT'])
+@cross_origin()
 def post_user():
     #Add this line to all things
     uid = check_auth()
@@ -113,4 +145,4 @@ def post_user():
         return {"Error": "Error"}, 400
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 2000)))
