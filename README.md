@@ -25,4 +25,5 @@ We're looking forward to expanding on the accuracy of our assets; specifically, 
 
 
 ### [View our Devpost](https://devpost.com/software/we-dont-have-a-project-name-yet)
+### [View our design process on Canva](https://www.canva.com/design/DAFx_Fiv7yI/k0eKUoiQUjFk-PY33ArUoQ/edit?utm_content=DAFx_Fiv7yI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 ---
