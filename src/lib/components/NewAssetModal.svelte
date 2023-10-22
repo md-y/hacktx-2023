@@ -1,6 +1,7 @@
 <script>
 	import { Modal, Form, TextInput, NumberInput, Dropdown, Button } from 'carbon-components-svelte';
 	import { user } from '../store.js';
+	import Graph from './Graph.svelte';
 	export let open = false;
 
 	let assetType = '';
@@ -175,12 +176,7 @@
 		return (year1 - year2) / (1000 * 60 * 60 * 24) / 365;
 	}
 
-	function confirmForm() {
-		open = false;
-		resetForm();
-	}
-
-	async function submitForm() {
+	async function confirmForm() {
 		const date = new Date();
 		const todayDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
 		let asset = {
@@ -235,7 +231,8 @@
 		const userData = $user;
 		userData['assets'].push(asset);
 		user.set(userData);
-		console.log(userData);
+		open = false;
+		resetForm();
 	}
 </script>
 
@@ -304,6 +301,49 @@
 				<!-- AI should also suggest min/max value -->
 			{/if}
 		{:else if currentStep === 5}
+			<div id="graph-container">
+				<Graph
+					xValues={[0, 365 * 4, 7]}
+					yValues={(t) => {
+						t /= 365;
+						let val = 0;
+
+						switch (selectedEquationType.toLowerCase()) {
+							case 'exponential':
+								val = currentValue * Math.pow(1 + growthRateR, t);
+								break;
+							case 'linear':
+								val = currentValue + t * growthRateR;
+								break;
+							case 'logistic':
+								val = (minMax / currentValue - 1) / Math.pow(Math.E, -1 * growthRateR * t);
+								break;
+						}
+						return val;
+					}}
+					options={{
+						maintainAspectRatio: true,
+						elements: {
+							line: {
+								borderColor: 'black'
+							}
+						},
+						scales: {
+							x: {
+								ticks: {
+									color: 'black'
+								}
+							},
+							y: {
+								ticks: {
+									color: 'black',
+									callback: (t) => `$${Math.round(t)}`
+								}
+							}
+						}
+					}}
+				/>
+			</div>
 			<!-- Display custom equation -->
 			<!-- Display graph -->
 			<p>Asset Name: {assetName}</p>
@@ -324,7 +364,6 @@
 			{#if currentStep == 4}
 				<Button
 					on:click={() => {
-						submitForm();
 						nextStep();
 					}}>Next</Button
 				>
@@ -355,5 +394,9 @@
 
 	.button-group {
 		margin-top: 20px;
+	}
+
+	#graph-container {
+		width: 100%;
 	}
 </style>
