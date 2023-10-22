@@ -4,10 +4,12 @@
     // Import the functions you need from the SDKs you need
 	import {signInWithPopup, signOut , signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
     import {auth, provider} from '../lib/util.js';
+    import {user} from '../lib/store.js';
 
 	import AES from 'crypto-js/aes';
 	import CryptoJS from 'crypto-js';
 	import { goto } from '$app/navigation';
+	import { get } from 'lodash';
 
     //my code
 
@@ -20,19 +22,34 @@
     let encryptedFile = false;
     let signUpPage = false;
 
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
 		loggedIn = user ? true : false;
 		if (loggedIn) {
 			uid = user.uid;
 			if (authToken == undefined) {
-				fetchAuthToken();
+				await fetchAuthToken();
 			}
+            await getData();
             goto('/dashboard');
 		} else {
 			uid = undefined;
 			authToken = undefined;
 		}
 	});
+
+    async function getData() {
+		try {
+			let response = await fetch('https://helloworld-feagyby2hq-uc.a.run.app/user', {
+				headers: {
+					AuthToken: authToken
+				}
+			});
+			const userData = await response.json();
+            $user =  userData;
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
     async function previewFile() {
 		const content = document.querySelector('.content');
