@@ -1,4 +1,6 @@
-# Welcome to AmIBroke.tech
+![Alt Text](https://i.imgur.com/jgp6YuC.gif)
+
+# Welcome to **AmIBroke.tech**
 ---
 ## Inspiration
 There are no readily-available applications that provide a simple, accessible computation of one's net worth. Largely out of pure curiosity, we wanted to build an app that calculated a user's equity, allowing for the easy culmination, management, and customization of assets and liabilities.
