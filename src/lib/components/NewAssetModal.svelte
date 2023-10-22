@@ -179,7 +179,7 @@
         //initial value, buy date, current value, and current date
         else if(selectedParamMethod == paramMethods[1]){
             asset['initial_value'] = initialValue;
-            if(selectedEquationType == 'Exponentional'){
+            if(selectedEquationType == 'Exponential'){
                 asset['r'] = calculateExponentialR(initialValue, buyDate, currentValue, todayDate);
             }
             else if(selectedEquationType == 'Logistic'){

@@ -71,7 +71,7 @@
 
 	async function getData(){
 		try{
-			let response = await fetch("http://127.0.0.1:2000/user", {
+			let response = await fetch("https://helloworld-feagyby2hq-uc.a.run.app/user", {
 				headers: {
 					"AuthToken": authToken
 				}
@@ -85,7 +85,7 @@
 
 	async function postData(){
 		try{
-			let response = await fetch("http://127.0.0.1:2000/user", {
+			let response = await fetch("https://helloworld-feagyby2hq-uc.a.run.app/user", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -101,7 +101,7 @@
 
 	async function pushData(){
 		try{
-			let response = await fetch("http://127.0.0.1:2000/user", {
+			let response = await fetch("https://helloworld-feagyby2hq-uc.a.run.app/user", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
