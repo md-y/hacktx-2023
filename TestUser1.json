@@ -143,63 +143,9 @@
             "asset_type": "Investments",
             "asset_name": "Roth IRA",
             "function_type": "exponential",
-            "initial_value": "0",
+            "initial_value": "230100",
             "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
-            "starting_date": "10/21/2023"
-        },
-        {
-            "asset_type": "Asset Type",
-            "asset_name": "Asset Name",
-            "function_type": "exponential",
-            "initial_value": "0",
-            "min_max_value": 0,
-            "r": 0.5,
+            "r": 0.07,
             "starting_date": "10/21/2023"
         }
     ],
