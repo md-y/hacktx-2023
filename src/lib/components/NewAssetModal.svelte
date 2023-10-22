@@ -332,7 +332,7 @@
 
 						switch (selectedEquationType.toLowerCase()) {
 							case 'exponential':
-								val = currentValue * ((1 + growthRateR) ** t);
+								val = currentValue * (Math.E ** (t * growthRateR));
 								break;
 							case 'linear':
 								val = currentValue + t * growthRateR;
