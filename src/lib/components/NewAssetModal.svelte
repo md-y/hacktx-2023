@@ -159,10 +159,12 @@
 		}
 
 		let difference = yearDifference(current_date, buy_date);
+		console.log(difference);
 
 		if (difference === 1) {
 			return Math.log(current_value / initial_value) - 1;
 		}
+		return (currentValue/initialValue) ** (1/difference) - 1;
 		return Math.log(current_value / initial_value) / Math.log(difference) - 1;
 	}
 
