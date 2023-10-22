@@ -6,6 +6,8 @@
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import _ from 'lodash';
 
+	export let focusType: string | undefined = undefined;
+
 	const assetData = $user;
 	const labels: string[] = [];
 	const values: number[] = [];
@@ -19,11 +21,14 @@
 		_.sum(arr.map((a) => a.current_amount))
 	).reverse();
 	for (const [i, arr] of groupedAssets) {
-		labels.push(i);
+		if (focusType && i != focusType) continue;
 		const sortedArr = _.sortBy(arr, (a) => a.current_amount).reverse();
 		const assetValues = sortedArr.map((a) => a.current_amount);
 		const assetLabels = sortedArr.map((a) => `> ${a.asset_name}`);
-		values.push(_.sum(assetValues));
+		if (!focusType) {
+			labels.push(i);
+			values.push(_.sum(assetValues));
+		}
 		labels.push(...assetLabels);
 		values.push(...assetValues);
 	}

@@ -2,11 +2,14 @@
 	import { base } from '$app/paths';
 	import AssetBarGraph from '$components/AssetBarGraph.svelte';
 	import BackIcon from '~icons/material-symbols/arrow-back';
+	import { page } from '$app/stores';
+
+	let assetType = $page.url.searchParams.get('type');
 </script>
 
 <a id="back-button" href="{base}/"><BackIcon /></a>
 <div id="graph-container">
-	<AssetBarGraph />
+	<AssetBarGraph focusType={assetType ?? undefined} />
 </div>
 
 <style lang="scss">

@@ -3,6 +3,7 @@
 	import Chart, { type ChartOptions } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import _ from 'lodash';
+	import { base } from '$app/paths';
 
 	export let data: Record<string, number>;
 
@@ -85,6 +86,10 @@
 				animation: {
 					duration: 1000,
 					easing: 'easeOutCubic'
+				},
+				onClick(event, elements, chart) {
+					const elem = elements[0];
+					window.location.replace(`${base}/assets?type=${labels[elem.index]}`);
 				}
 			} as ChartOptions<'doughnut'>
 		});
