@@ -1,6 +1,7 @@
 {
     "assets": [
         {
+            "asset_type": "Test",
             "asset_name": "Asset Name",
             "asset_type": "Asset Name",
             "function_type": "exponential",

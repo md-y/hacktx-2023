@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { numberWithCommas } from '$lib/util';
+	import { formatNumber } from '$lib/util.js';
 	import Chart, { type ChartOptions } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import { fade } from 'svelte/transition';
@@ -94,7 +94,7 @@
 <div class="container">
 	<div class="overlay">
 		<div>
-			<h1>${numberWithCommas(totalValue.toString())}</h1>
+			<h1>${formatNumber(totalValue)}</h1>
 			<h2>TOTAL NET WORTH</h2>
 		</div>
 	</div>

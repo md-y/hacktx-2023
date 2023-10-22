@@ -1,0 +1,184 @@
+{
+    "assets": [
+        {
+            "asset_type": "Vehicle",
+            "asset_name": "2010 Ford Mustang",
+            "function_type": "exponential",
+            "initial_value": 28845,
+            "min_max_value": 0,
+            "r": -0.2,
+            "starting_date": "3/23/2009"
+        },
+
+        {
+            "asset_type": "Vehicle",
+            "asset_name": "2024 Toyota Camry",
+            "function_type": "exponential",
+            "initial_value": 26420,
+            "min_max_value": 0,
+            "r": -0.2,
+            "starting_date": "09/15/2023"
+        },
+
+        {
+            "asset_type": "Real Estate",
+            "asset_name": "House",
+            "function_type": "exponential",
+            "initial_value": 350000,
+            "min_max_value": 0,
+            "r": 0.06,
+            "starting_date": "04/06/2011"
+        },
+
+        {
+            "asset_type": "Technology",
+            "asset_name": "Desktop PC",
+            "function_type": "exponential",
+            "initial_value": 950,
+            "min_max_value": 0,
+            "r": -0.1,
+            "starting_date": "05/01/2019"
+        },
+
+        {
+            "asset_type": "Technology",
+            "asset_name": "iPhone 15 Pro Max",
+            "function_type": "exponential",
+            "initial_value": 1200,
+            "min_max_value": -0.1,
+            "r": 0.5,
+            "starting_date": "10/06/2023"
+        },
+
+        {
+            "asset_type": "Technology",
+            "asset_name": "2020 MacBook Air M1",
+            "function_type": "exponential",
+            "initial_value": 1000,
+            "min_max_value": 0,
+            "r": -0.1,
+            "starting_date": "11/21/2020"
+        },
+
+        {
+            "asset_type": "Techology",
+            "asset_name": "iPad Pro",
+            "function_type": "exponential",
+            "initial_value": 799,
+            "min_max_value": 0,
+            "r": -0.1,
+            "starting_date": "10/21/2023"
+        },
+
+        {
+            "asset_type": "Prepaid Assets",
+            "asset_name": "Health Insurance",
+            "function_type": "linear",
+            "initial_value": 6720,
+            "min_max_value": 0,
+            "r": -6720,
+            "starting_date": "10/21/2023"
+        },
+
+        {
+            "asset_type": "Prepaid Assets",
+            "asset_name": "Renter's Insurance",
+            "function_type": "linear",
+            "initial_value": 227,
+            "min_max_value": 0,
+            "r": -227,
+            "starting_date": "10/21/2023"
+        },
+
+        {
+            "asset_type": "Prepaid Assets",
+            "asset_name": "Car Insurance",
+            "function_type": "linear",
+            "initial_value": 2205,
+            "min_max_value": 0,
+            "r": -2205,
+            "starting_date": "10/21/2023"
+        },
+
+        {
+            "asset_type": "Prepaid Assets",
+            "asset_name": "Home Insurance",
+            "function_type": "linear",
+            "initial_value": 4142,
+            "min_max_value": 0,
+            "r": -4142,
+            "starting_date": "10/21/2023"
+        },
+
+        {
+            "asset_type": "Investments",
+            "asset_name": "Stocks",
+            "function_type": "exponential",
+            "initial_value": "80000",
+            "min_max_value": 0,
+            "r": 0.07,
+            "starting_date": "10/21/2008"
+        },
+
+        {
+            "asset_type": "Investments",
+            "asset_name": "401K",
+            "function_type": "exponential",
+            "initial_value": "141542",
+            "min_max_value": 0,
+            "r": 0.05,
+            "starting_date": "10/21/2008"
+        },
+
+        {
+            "asset_type": "Investments",
+            "asset_name": "Bonds",
+            "function_type": "exponential",
+            "initial_value": "2000",
+            "min_max_value": 0,
+            "r": 0.05,
+            "starting_date": "10/21/2015"
+        },
+        {
+            "asset_type": "Investments",
+            "asset_name": "Roth IRA",
+            "function_type": "exponential",
+            "initial_value": "230100",
+            "min_max_value": 0,
+            "r": 0.07,
+            "starting_date": "10/21/2023"
+        }
+    ],
+    "bills": [
+        {
+            "payment_amount": 0,
+            "payment_date": "10/21/2023"
+        }
+    ],
+    "checking_account_balance": 0,
+    "checking_account_reward": 0,
+    "credit_card_balance": 0,
+    "credit_card_rewards": 0,
+    "deposits": [
+        {
+            "account": "checkings",
+            "amount": 0,
+            "date": "10/21/2023"
+        }
+    ],
+    "monthly_bills": [
+        {
+            "amount": 0
+        }
+    ],
+    "savings_account_balance": 0,
+    "savings_account_rewards": 0,
+    "uid": "",
+    "withdrawls": [
+        {
+            "account": "checkings",
+            "amount": 0,
+            "date": "10/21/2023"
+        }
+    ]
+}

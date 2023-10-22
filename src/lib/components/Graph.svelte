@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Chart, type ChartOptions } from 'chart.js/auto';
+	import { merge } from 'lodash';
 
 	export let yValues: number[] | ((val: number) => number);
 	// If not labels: start value, end value, step
@@ -23,6 +24,8 @@
 		}
 	}
 
+	export let options: ChartOptions<'line'> = {};
+
 	let canvasElem: HTMLCanvasElement;
 	$: if (canvasElem) {
 		new Chart(canvasElem, {
@@ -36,15 +39,43 @@
 					}
 				]
 			},
-
-			options: {
-				plugins: {
-					legend: {
-						display: false
+			options: merge(
+				{
+					plugins: {
+						legend: {
+							display: false
+						}
+					},
+					maintainAspectRatio: false,
+					elements: {
+						line: {
+							borderColor: 'white'
+						},
+						point: {
+							backgroundColor: 'transparent'
+						}
+					},
+					scales: {
+						y: {
+							grid: {
+								color: 'transparent'
+							},
+							ticks: {
+								color: 'white'
+							}
+						},
+						x: {
+							grid: {
+								color: 'transparent'
+							},
+							ticks: {
+								color: 'white'
+							}
+						}
 					}
-				},
-				backgroundColor: ['#17ABC4', '#82DAFA', '#00759C', '#9EF1FF', '#4D8CA8', '#0F5E9F']
-			} as ChartOptions<'line'>
+				} as ChartOptions<'line'>,
+				options
+			)
 		});
 	}
 </script>
