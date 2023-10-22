@@ -1,5 +1,27 @@
 <script>
 	import 'carbon-components-svelte/css/white.css';
+	import { onMount} from 'svelte';
+	import { user, authToken} from '../lib/store.js'
+	import { getDoughnutData } from '$lib/assets.js';
+
+	async function getData() {
+		try {
+			let at = $authToken;
+			let response = await fetch('https://helloworld-feagyby2hq-uc.a.run.app/user', {
+				headers: {
+					AuthToken: at
+				}
+			});
+			let userData = await response.json();
+			$user = userData;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	onMount(async ()=>{
+		await getData();
+	})
 </script>
 
 <div id="bg">
