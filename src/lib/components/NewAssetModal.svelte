@@ -1,6 +1,8 @@
 <script>
 	import { Modal, Form, TextInput, NumberInput, Dropdown, Button } from 'carbon-components-svelte';
 	import { user, authToken } from '../store.js';
+	import {openaikey} from '../keys.js';
+
 	import Graph from './Graph.svelte';
 	export let open = false;
 
@@ -77,8 +79,7 @@
 
 	async function suggestRValue(asset, function_type) {
 		const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
-		const API_KEY = window.localStorage.getItem('openai_api_key') ?? 'apikey';
-
+		const API_KEY = openaikey;
 		const messages = [
 			{
 				role: 'system',
