@@ -33,7 +33,6 @@
 
 		& :global(canvas) {
 			width: 100%;
-			height: 1000vh;
 		}
 	}
 </style>

@@ -81,6 +81,7 @@
 					y: {
 						ticks: {
 							color: 'white',
+							autoSkip: false,
 							callback(tickValue, index, ticks) {
 								const str = labels[index];
 								if (str.startsWith('> ')) {
@@ -92,12 +93,12 @@
 								const str = labels[ctx.index];
 								return str.startsWith('>')
 									? {
-											size: 20,
+											size: 16,
 											weight: 'normal',
 											style: 'italic'
 									  }
 									: {
-											size: 30,
+											size: 24,
 											weight: 'bold'
 									  };
 							}
