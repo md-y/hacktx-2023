@@ -1,3 +1,7 @@
+<script>
+	import 'carbon-components-svelte/css/white.css';
+</script>
+
 <div id="bg">
 	<slot />
 </div>
