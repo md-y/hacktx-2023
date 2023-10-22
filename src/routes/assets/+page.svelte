@@ -1,9 +1,10 @@
 <script>
+	import { base } from '$app/paths';
 	import AssetBarGraph from '$components/AssetBarGraph.svelte';
 	import BackIcon from '~icons/material-symbols/arrow-back';
 </script>
 
-<a id="back-button" href="/"><BackIcon /></a>
+<a id="back-button" href="{base}/"><BackIcon /></a>
 <div id="graph-container">
 	<AssetBarGraph />
 </div>

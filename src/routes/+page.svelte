@@ -10,6 +10,7 @@
 	import { TooltipIcon } from 'carbon-components-svelte';
 	import BrowseAssetsIcon from '~icons/material-symbols/insert-chart-outline';
 	import AddAssetIcon from '~icons/material-symbols/add-rounded';
+	import { base } from '$app/paths';
 
 	let todayAssetData = getDoughnutData();
 	let todayNetWorth = _.sum(Object.values(todayAssetData));
@@ -31,7 +32,7 @@
 			<a on:click={() => (openModal = true)}>
 				<TooltipIcon icon={AddAssetIcon} tooltipText={'Add new asset'} />
 			</a>
-			<a href="/assets">
+			<a href="{base}/assets">
 				<TooltipIcon icon={BrowseAssetsIcon} tooltipText={'Browse all assets'} />
 			</a>
 		</div>
