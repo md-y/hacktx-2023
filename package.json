@@ -38,7 +38,9 @@
   "type": "module",
   "dependencies": {
     "crypto-js": "^4.1.1",
+    "@esbuild/darwin-arm64": "^0.19.5",
     "firebase": "^10.5.0",
+    "timeseries-analysis": "^1.0.12",
     "unplugin-icons": "^0.17.1"
   }
 }
