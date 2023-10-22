@@ -3,13 +3,22 @@
 	import AssetBarGraph from '$components/AssetBarGraph.svelte';
 	import BackIcon from '~icons/material-symbols/arrow-back';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
-	let assetType = $page.url.searchParams.get('type');
+	/**
+	 * @type {string | null | undefined}
+	 */
+	let assetType = undefined;
+	onMount(() => {
+		assetType = $page.url.searchParams.get('type');
+	});
 </script>
 
 <a id="back-button" href="{base}/"><BackIcon /></a>
 <div id="graph-container">
-	<AssetBarGraph focusType={assetType ?? undefined} />
+	{#key assetType}
+		<AssetBarGraph focusType={assetType ?? undefined} />
+	{/key}
 </div>
 
 <style lang="scss">
