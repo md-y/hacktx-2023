@@ -81,7 +81,11 @@
 					padding: 100
 				},
 				cutout: '75%',
-				backgroundColor: ['#17ABC4', '#82DAFA', '#00759C', '#9EF1FF', '#4D8CA8', '#0F5E9F']
+				backgroundColor: ['#17ABC4', '#82DAFA', '#00759C', '#9EF1FF', '#4D8CA8', '#0F5E9F'],
+				animation: {
+					duration: 1000,
+					easing: 'easeOutCubic'
+				}
 			} as ChartOptions<'doughnut'>
 		});
 	}
@@ -89,7 +93,7 @@
 
 <div class="container">
 	<div class="overlay">
-		<div in:fade={{ delay: 250, duration: 300 }}>
+		<div>
 			<h1>${numberWithCommas(totalValue.toString())}</h1>
 			<h2>TOTAL NET WORTH</h2>
 		</div>
@@ -98,6 +102,11 @@
 </div>
 
 <style lang="scss">
+	canvas:hover {
+		position: relative;
+		z-index: 10;
+	}
+
 	.container {
 		aspect-ratio: 1;
 	}
