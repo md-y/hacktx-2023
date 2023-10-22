@@ -14,7 +14,7 @@
 	});
 </script>
 
-<a id="back-button" href="{base}/"><BackIcon /></a>
+<a id="back-button" href="{base}/dashboard"><BackIcon /></a>
 <div id="graph-container">
 	{#key assetType}
 		<AssetBarGraph focusType={assetType ?? undefined} />
