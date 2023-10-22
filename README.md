@@ -21,9 +21,7 @@ Our alternative for authentication with an encrypted file, writing our UI from s
 We learned a lot about Google Cloud Run, Flask, CORS errors, front-end development in Svelte, and data visualization
 
 ## What's next for AmIBroke.tech
-We're looking forward to expanding on the accuracy of our assets; specifically, showcasing our users' market liquidity, and perhaps their personal accounting liquidity. In the name of improved accessibility and understanding of personal finances for anyone willing to download AmIBroke.tech, we also hope to provide some resources on increasing one's liquidity, and enhancing their personal finance management capabilities as a whole.
-
-We are also looking forward to making a mobile app, and implementing more robust prediction modeling with a machine learning model.
+We're looking forward to expanding on the accuracy of our assets; specifically, showcasing our users' market liquidity, and perhaps their personal accounting liquidity. In the name of improved accessibility and understanding of personal finances for anyone willing to download AmIBroke.tech, we also hope to provide some resources on increasing one's liquidity, and enhancing their personal finance management capabilities as a whole. We are also looking forward to making a mobile app, and implementing more robust prediction modeling with a machine learning model.
 
 
 ### [View our Devpost](https://devpost.com/software/we-dont-have-a-project-name-yet)
