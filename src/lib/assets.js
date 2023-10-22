@@ -230,6 +230,9 @@ const DB = {
 	]
 };
 
+/**
+ * @returns {Record<string, number>}
+ */
 export function getDoughnutData() {
 	const assetTypes = {};
 	for (const asset of DB.assets) {

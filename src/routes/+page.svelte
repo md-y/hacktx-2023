@@ -9,7 +9,7 @@
 
 	const dailyChange = 69420;
 
-	let assetData = getDoughnutData() as Record<string, number>;
+	let assetData = getDoughnutData();
 
 	let changeDown: boolean = false;
 </script>
