@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { sum } from 'lodash';
+import _ from 'lodash';
 import { get } from 'svelte/store';
 import { user } from './store';
 
@@ -22,10 +22,10 @@ export function getDoughnutData(time = Date.now()) {
 	}
 
 	let currentBalance = userData.checking_account_balance + userData.savings_account_balance;
-	const futureWithdrawals = sum(
+	const futureWithdrawals = _.sum(
 		userData.withdrawls.filter((w) => new Date(w.date) > time).map((w) => w.amount)
 	);
-	const futureDeposits = sum(
+	const futureDeposits = _.sum(
 		userData.deposits.filter((d) => new Date(d.date) > time).map((d) => d.amount)
 	);
 
@@ -42,7 +42,7 @@ export function getDoughnutData(time = Date.now()) {
  */
 export function getNetWorth(time = Date.now()) {
 	const data = getDoughnutData(time);
-	return sum(Object.values(data));
+	return _.sum(Object.values(data));
 }
 
 /**

@@ -6,10 +6,10 @@
 	import Graph from '$components/Graph.svelte';
 	import NewAssetModal from '$components/NewAssetModal.svelte';
 	import { getDoughnutData, getNetWorth } from '$lib/assets';
-	import { sum } from 'lodash';
+	import _ from 'lodash';
 
 	let todayAssetData = getDoughnutData();
-	let todayNetWorth = sum(Object.values(todayAssetData));
+	let todayNetWorth = _.sum(Object.values(todayAssetData));
 	let yesterdayAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000);
 	let lastMonthAssetData = getNetWorth(Date.now() - 24 * 60 * 60 * 1000 * 30);
 	let dailyChange = todayNetWorth - yesterdayAssetData;

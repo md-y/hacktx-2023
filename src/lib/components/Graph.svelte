@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatNumber } from '$lib/util';
 	import { Chart, type ChartOptions } from 'chart.js/auto';
-	import { merge } from 'lodash';
+	import _ from 'lodash';
 
 	export let yValues: number[] | ((val: number) => number);
 	// If not labels: start value, end value, step
@@ -42,7 +42,7 @@
 					}
 				]
 			},
-			options: merge(
+			options: _.merge(
 				{
 					plugins: {
 						legend: {

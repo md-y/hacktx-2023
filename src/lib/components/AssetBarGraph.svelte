@@ -4,7 +4,7 @@
 	import { formatNumber } from '$lib/util';
 	import { Chart } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
-	import { groupBy, sortBy, sum } from 'lodash';
+	import _ from 'lodash';
 
 	const assetData = $user;
 	const labels: string[] = [];
@@ -15,15 +15,15 @@
 		assets.push({ ...asset, current_amount: getCurrentAssetValue(asset) });
 	}
 
-	const groupedAssets = sortBy(Object.entries(groupBy(assets, 'asset_type')), ([_, arr]) =>
-		sum(arr.map((a) => a.current_amount))
+	const groupedAssets = _.sortBy(Object.entries(_.groupBy(assets, 'asset_type')), ([, arr]) =>
+		_.sum(arr.map((a) => a.current_amount))
 	).reverse();
 	for (const [i, arr] of groupedAssets) {
 		labels.push(i);
-		const sortedArr = sortBy(arr, (a) => a.current_amount).reverse();
+		const sortedArr = _.sortBy(arr, (a) => a.current_amount).reverse();
 		const assetValues = sortedArr.map((a) => a.current_amount);
 		const assetLabels = sortedArr.map((a) => `> ${a.asset_name}`);
-		values.push(sum(assetValues));
+		values.push(_.sum(assetValues));
 		labels.push(...assetLabels);
 		values.push(...assetValues);
 	}
