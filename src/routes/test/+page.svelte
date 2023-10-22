@@ -5,6 +5,8 @@
 	import { initializeApp } from "firebase/app";
 	import { getAuth, signInWithPopup, signOut} from "firebase/auth";
 	import { GoogleAuthProvider } from "firebase/auth";
+	import AES from 'crypto-js/aes';
+	import CryptoJS from 'crypto-js'
 
 	// TODO: Add SDKs for Firebase products that you want to use
 	// https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,13 +34,18 @@
 	let loggedIn = false;
 	let authToken = undefined;
 	let userData = undefined;
+	let uid = undefined;
+	let decryptPassword = undefined;
+
 	auth.onAuthStateChanged(user => {
 		loggedIn = user ? true : false;
 		if(loggedIn){
+			uid = user.uid;
 			if(authToken == undefined){
 				fetchAuthToken();
 			}
 		}else{
+			uid = undefined;
 			authToken = undefined;
 		}
 	})
@@ -62,7 +69,7 @@
 		console.log("logging you out");
 	}
 
-	async function testWithBackend(){
+	async function getData(){
 		try{
 			let response = await fetch("http://127.0.0.1:2000/user", {
 				headers: {
@@ -73,6 +80,74 @@
 		}
 		catch(error){
 			console.log(error)
+		}
+	}
+
+	async function postData(){
+		try{
+			let response = await fetch("http://127.0.0.1:2000/user", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"AuthToken": authToken
+				},
+				body: JSON.stringify(userData)
+			});
+		}
+		catch(error){
+			console.log(error)
+		}
+	}
+
+	async function pushData(){
+		try{
+			let response = await fetch("http://127.0.0.1:2000/user", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					"AuthToken": authToken
+				},
+				body: JSON.stringify(userData)
+			});
+		}
+		catch(error){
+			console.log(error)
+		}
+	}
+
+	function downloadData(){
+		//code to encrypt file
+		let encryptedData = encryptData(JSON.stringify(userData), decryptPassword).toString();
+
+		//code to download file
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedData));
+		element.setAttribute('download', "my_secure_financial_data.txt");
+
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+
+		document.body.removeChild(element);
+	}
+
+	async function previewFile() {
+		const content = document.querySelector(".content");
+		const [file] = document.querySelector("input[type=file]").files;
+		const reader = new FileReader();
+
+		reader.addEventListener(
+			"load",
+			() => {
+				//this updates the userData 
+				userData = JSON.parse(decryptData(reader.result, decryptPassword).toString(CryptoJS.enc.Utf8));
+			},
+			false,
+		);
+
+		if (file) {
+			reader.readAsText(file);
 		}
 	}
 
@@ -164,10 +239,25 @@
 
     return parseFloat(numberMatches[0]);
 	}
+
+	function encryptData(data, key){
+		return AES.encrypt(data, key);
+	}
+
+	function decryptData(data, key){
+		return AES.decrypt(data, key);
+	}
 </script>
 
 <button on:click={login}>Login</button>
 <button on:click={logout}>Logout</button>
 <p>Logged in status: {loggedIn}</p>
-<button on:click={testWithBackend}>Test interaction with backend</button>
+<button on:click={getData}>Get data</button>
+<button on:click={postData}>Post data</button>
+<button on:click={pushData}>Put data</button>
+<button on:click={downloadData}>Download data</button>
+<input type="file" on:change={previewFile}/>
+<label for="decryptPassword"> password for file</label>
+<input id="decryptPassword" type="password" bind:value={decryptPassword}/>
+<p class="content"></p>
 <p>{JSON.stringify(userData)}</p>

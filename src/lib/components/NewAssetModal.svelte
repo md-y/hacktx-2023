@@ -9,7 +9,7 @@
     let initialValue = '';
     let buyDate = '';
     let currentDate = '';
-    
+
     let equationTypes = [
         { text: 'Linear', value: 'Linear' },
         { text: 'Exponential', value: 'Exponential' },
@@ -62,6 +62,10 @@
     input[type="radio"] {
         margin-right: 8px;
     }
+
+    .button-group {
+        margin-top: 20px;
+    }
 </style>
 
 <button on:click={() => open = true}>Add Asset</button>
@@ -71,6 +75,7 @@
     modalHeading="Asset Details" 
     on:click:button--secondary={closeModal}
     on:close={closeModal}
+	passiveModal
 >
     <Form>
         {#if currentStep === 0}
@@ -78,9 +83,9 @@
         {:else if currentStep === 1}
             <TextInput bind:value={assetName} placeholder="Enter the name of your asset" />
         {:else if currentStep === 2}
-            <label class="custom-label">
+            <label class="custom-label" for="equationSelect">
                 Select an equation type:
-                <select bind:value={selectedEquationType}>
+                <select id="equationSelect" bind:value={selectedEquationType}>
                     {#each equationTypes as type}
                         <option value={type.value}>{type.text}</option>
                     {/each}
