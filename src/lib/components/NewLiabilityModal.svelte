@@ -1,20 +1,31 @@
 <script>
-    import { Button, Modal } from "carbon-components-svelte";
-  
+    import { Button, Modal, TextInput } from "carbon-components-svelte";
+    
     let open = false;
+    let liabilityValue = '';
   </script>
-  
-  <Button on:click={() => (open = true)}>Create database</Button>
-  
+    
+  <Button on:click={() => (open = true)}>Add Liability</Button>
+    
   <Modal
     bind:open
-    modalHeading="Create database"
+    modalHeading="Add Liability"
     primaryButtonText="Confirm"
     secondaryButtonText="Cancel"
     on:click:button--secondary={() => (open = false)}
     on:open
     on:close
-    on:submit
+    on:submit={() => {
+      console.log(liabilityValue);
+      open = false;
+    }}
   >
-    <p>Create a new Cloudant database in the US South region.</p>
+    <TextInput
+      id="liabilityValue"
+      labelText="Liability Value"
+      value={liabilityValue}
+      on:input={(event) => {
+        liabilityValue = event.target.value;
+      }}
+    />
   </Modal>
