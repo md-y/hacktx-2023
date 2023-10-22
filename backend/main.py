@@ -50,7 +50,6 @@ testUserData = {
   ],
   "savings_account_balance": 0,
   "savings_account_rewards": 0,
-  "uid": "",
   "withdrawls": [
     {
       "account": "checkings",
@@ -71,7 +70,6 @@ newUserData = {
   "monthly_bills": [],
   "savings_account_balance": 0,
   "savings_account_rewards": 0,
-  "uid": "",
   "withdrawls": []
 }
 
@@ -95,20 +93,13 @@ def get_user():
     
     try:
         #for test just get and print a user
-        users = usersRef.where("uid", "==", uid).stream()
-        i = 0
-        for u in users:
-            user = u
-            i+=1
-        if i == 0:
-            user = newUserData
-            user['uid'] = uid
-            usersRef.document().set(user)
-            del user['uid']
+        user = usersRef.document(uid).get()
+        if user.exists:
+            user = user.to_dict()
             return user
         else:
-            user = user.to_dict()
-            del user['uid']
+            user = testUserData
+            usersRef.document(uid).set(user)
             return user
     
     except Exception as error:
@@ -122,27 +113,15 @@ def post_user():
     uid = check_auth()
     if uid == "":
         return {"Error": "Error"}, 400
-    
     try:
         #check if user already exists
-        users = usersRef.where("uid", "==", uid).stream()
-        user = request.json
-        user['uid'] = uid
-
-        if testUserData.keys() != user.keys():
-            return {"Error": "Invalid Object"}, 400
-        
-        if users:
-            userDocId = next(users).id
-            usersRef.document(userDocId).set(user)
-        else:
-            usersRef.document().set(user)
-
-        #print(json.dumps(user, indent=2))
-        return user
+        newUser = request.json
+        usersRef.document(uid).set(newUser)
+        return newUser
+    
     except Exception as error:
         print(error)
         return {"Error": "Error"}, 400
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 2000)))
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

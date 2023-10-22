@@ -175,7 +175,6 @@ export const user = writable({
 	],
 	savings_account_balance: 0,
 	savings_account_rewards: 0,
-	uid: '',
 	withdrawls: [
 		{
 			account: 'checkings',
