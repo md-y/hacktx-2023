@@ -331,13 +331,13 @@
 
 						switch (selectedEquationType.toLowerCase()) {
 							case 'exponential':
-								val = currentValue * Math.pow(1 + growthRateR, t);
+								val = currentValue * ((1 + growthRateR) ** t);
 								break;
 							case 'linear':
 								val = currentValue + t * growthRateR;
 								break;
 							case 'logistic':
-								val = (minMax / currentValue - 1) / Math.pow(Math.E, -1 * growthRateR * t);
+								val = ((minMax)/(1 + (currentValue * Math.E) ** (growthRateR * t * -1)));
 								break;
 						}
 						return val;

@@ -33,6 +33,7 @@
 		rel="stylesheet"
 		href="https://fonts.googleapis.com/css?family=Roboto:regular,bold|Be+Vietnam+Pro:Light,regular,bold&display=swap"
 	/>
+	<title>Am I Broke?</title>
 </svelte:head>
 
 <style lang="scss">
