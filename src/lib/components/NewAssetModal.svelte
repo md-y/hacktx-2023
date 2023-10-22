@@ -59,31 +59,10 @@
         currentStep = 0;
     }
 
-    function calculateLogisticR(initial_value, buy_date, current_value, current_date) {
-        if(currentDate == buy_date){
-            return 1;
-        }
 
-  		const L = 2 * initial_value;
-  		const time_difference = yearDifference(current_date, buy_date);
-  		const c = L / initial_value - 1;
 
-  		const logisticFunction = (R) => {
-      		return current_value - (L / (1 + c * Math.exp(-R * time_difference)));
-  		};
-
-  		const logisticFunctionDerivative = (R) => {
-      		return L * c * time_difference * Math.exp(-R * time_difference) / 
-             ((1 + c * Math.exp(-R * time_difference)) ** 2);
-  		};
-
-  		try {
-      		const R = newtonRaphson(logisticFunction, logisticFunctionDerivative, 0.05);
-      		return R;
-  		} catch (e) {
-      		console.error(e.message);
-      		return null;
-  		}
+    function calculateLogisticR(initial_value, buy_date, current_value, current_date, min_max_value) {
+		return ((Math.log(((min_max_value / current_value))/(initial_value))) / yearDifference(current_date, buy_date)) * -1
 	}
 
     async function suggestRValue(asset, function_type) {
@@ -127,29 +106,20 @@
   		return (current_value - initial_value) / yearDifference(current_date, buy_date);
 	}
 
-    // Newton-Raphson Method
-	function newtonRaphson(func, derivative, initialGuess, tolerance = 1e-6, maxIterations = 1000) {
-  		let x0 = initialGuess;
-  		let x1;
-
-  		for (let i = 0; i < maxIterations; i++) {
-      		x1 = x0 - func(x0) / derivative(x0);
-
-      		if (Math.abs(x1 - x0) <= tolerance) {
-          		return x1;
-      		}
-
-      		x0 = x1;
-  		}	
-  		throw new Error('Newton-Raphson method did not converge');
-	}
 
     function calculateExponentialR(initial_value, buy_date, current_value, current_date) {
-        if (current_date === buy_date) {
-            return 1;
-        }
-        return (current_value / initial_value) ** (1 / yearDifference(current_date, buy_date)) - 1;
-	}
+    if (current_date === buy_date) {
+        return 1;
+    }
+    
+    let difference = yearDifference(current_date, buy_date);
+    
+    if (difference === 1) {
+        return Math.log(current_value/initial_value) - 1; 
+    }
+    return (Math.log(current_value/initial_value) / Math.log(difference)) - 1;
+}
+
 
     function yearDifference(year1, year2){
         year1 = new Date(year1);
@@ -183,7 +153,7 @@
                 asset['r'] = calculateExponentialR(initialValue, buyDate, currentValue, todayDate);
             }
             else if(selectedEquationType == 'Logistic'){
-                asset['r'] = calculateLogisticR(initialValue, buyDate, currentValue, todayDate);
+                asset['r'] = calculateLogisticR(initialValue, buyDate, currentValue, todayDate, minMax);
             }
             else if(selectedEquationType == 'Linear'){
                 asset['r'] = calculateLinearR(initialValue, buyDate, currentValue, todayDate);

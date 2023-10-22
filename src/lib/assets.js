@@ -1,258 +1,57 @@
 // @ts-nocheck
-const DB = {
-	assets: [
-		{
-			asset_type: 'Car',
-			asset_name: '2010 Ford Mustang',
-			function_type: 'exponential',
-			initial_value: '28845',
-			min_max_value: 0,
-			r: -0.2,
-			starting_date: '3/23/2009'
-		},
 
-		{
-			asset_type: 'Car',
-			asset_name: '2024 Toyota Camry',
-			function_type: 'exponential',
-			initial_value: '26420',
-			min_max_value: 0,
-			r: -0.2,
-			starting_date: '09/15/2023'
-		},
-
-		{
-			asset_type: 'Property',
-			asset_name: 'House',
-			function_type: 'exponential',
-			initial_value: '350000',
-			min_max_value: 0,
-			r: 0.06,
-			starting_date: '04/06/2011'
-		},
-
-		{
-			asset_type: 'Technology',
-			asset_name: 'Desktop PC',
-			function_type: 'exponential',
-			initial_value: '950',
-			min_max_value: 0,
-			r: -0.1,
-			starting_date: '05/01/2019'
-		},
-
-		{
-			asset_type: 'Technology',
-			asset_name: 'iPhone 15 Pro Max',
-			function_type: 'exponential',
-			initial_value: '1200',
-			min_max_value: -0.1,
-			r: 0.5,
-			starting_date: '10/06/2023'
-		},
-
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		},
-		{
-			asset_type: 'Asset Type',
-			asset_name: 'Asset Name',
-			function_type: 'exponential',
-			initial_value: '0',
-			min_max_value: 0,
-			r: 0.5,
-			starting_date: '10/21/2023'
-		}
-	],
-	bills: [
-		{
-			payment_amount: 0,
-			payment_date: '10/21/2023'
-		}
-	],
-	checking_account_balance: 10000,
-	checking_account_reward: 0,
-	credit_card_balance: 0,
-	credit_card_rewards: 1000,
-	deposits: [
-		{
-			account: 'checkings',
-			amount: 0,
-			date: '10/21/2023'
-		}
-	],
-	monthly_bills: [
-		{
-			amount: 0
-		}
-	],
-	savings_account_balance: 0,
-	savings_account_rewards: 0,
-	uid: '',
-	withdrawls: [
-		{
-			account: 'checkings',
-			amount: 0,
-			date: '10/21/2023'
-		}
-	]
-};
+import _ from 'lodash';
+import { get } from 'svelte/store';
+import { user } from './store';
 
 /**
+ * @param {Date | number} time
  * @returns {Record<string, number>}
  */
-export function getDoughnutData() {
+export function getDoughnutData(time = Date.now()) {
+	const userData = get(user);
+
+	/**
+	 * @type {Record<string, number>}
+	 */
 	const assetTypes = {};
-	for (const asset of DB.assets) {
+	for (const asset of userData.assets) {
+		if (new Date(asset.starting_date) > time) continue;
 		if (!(asset.asset_type in assetTypes)) assetTypes[asset.asset_type] = 0;
-		assetTypes[asset.asset_type] += getCurrentAssetValue(asset);
+		assetTypes[asset.asset_type] += getCurrentAssetValue(asset, time);
 	}
 
-	let monetaryAssets = 0;
-	monetaryAssets += DB.checking_account_balance;
-	monetaryAssets += DB.savings_account_balance;
-	monetaryAssets += DB.credit_card_rewards;
-	assetTypes['Monetary Assets'] = monetaryAssets;
+	let currentBalance = userData.checking_account_balance + userData.savings_account_balance;
+	const futureWithdrawals = _.sum(
+		userData.withdrawls.filter((w) => new Date(w.date) > time).map((w) => w.amount)
+	);
+	const futureDeposits = _.sum(
+		userData.deposits.filter((d) => new Date(d.date) > time).map((d) => d.amount)
+	);
+
+	assetTypes['Monetary Assets'] = currentBalance + futureWithdrawals - futureDeposits;
 
 	// TODO: Liabilities?
 
 	return assetTypes;
 }
 
-export function getCurrentAssetValue(asset) {
-	const t = (Date.now() - new Date(asset.starting_date)) / 1000 / 60 / 60 / 24 / 365;
+/**
+ * @param {Date | number} time
+ * @returns {number}
+ */
+export function getNetWorth(time = Date.now()) {
+	const data = getDoughnutData(time);
+	return _.sum(Object.values(data));
+}
+
+/**
+ * @param {*} asset
+ * @param {Date | number} time
+ * @returns
+ */
+export function getCurrentAssetValue(asset, time = Date.now()) {
+	const t = (time - new Date(asset.starting_date)) / 1000 / 60 / 60 / 24 / 365;
 	/**
 	 * @type {number}
 	 */

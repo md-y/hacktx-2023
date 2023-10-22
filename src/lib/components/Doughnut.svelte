@@ -2,7 +2,7 @@
 	import { formatNumber } from '$lib/util.js';
 	import Chart, { type ChartOptions } from 'chart.js/auto';
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
-	import { fade } from 'svelte/transition';
+	import _ from 'lodash';
 
 	export let data: Record<string, number>;
 
@@ -17,7 +17,7 @@
 	const otherLabelPercentile = 0.05;
 
 	let totalValue: number;
-	$: totalValue = values.reduce((d, v) => v + d, 0);
+	$: totalValue = _.sum(values);
 
 	let firstBigIndex: number;
 	let otherSectionValue: number;
@@ -137,11 +137,11 @@
 			}
 
 			h1 {
-				font-size: 3rem;
+				font-size: 2vw;
 			}
 
 			h2 {
-				font-size: 1.2rem;
+				font-size: 1vw;
 			}
 		}
 
