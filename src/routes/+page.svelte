@@ -7,6 +7,9 @@
 	import NewAssetModal from '$components/NewAssetModal.svelte';
 	import { getDoughnutData, getNetWorth } from '$lib/assets';
 	import _ from 'lodash';
+	import { TooltipIcon } from 'carbon-components-svelte';
+	import BrowseAssetsIcon from '~icons/material-symbols/insert-chart-outline';
+	import AddAssetIcon from '~icons/material-symbols/add-rounded';
 
 	let todayAssetData = getDoughnutData();
 	let todayNetWorth = _.sum(Object.values(todayAssetData));
@@ -16,10 +19,22 @@
 	let monthlyChange = todayNetWorth - lastMonthAssetData;
 
 	const DAY = 24 * 60 * 60 * 1000;
+
+	let openModal = false;
 </script>
+
+<NewAssetModal bind:open={openModal} />
 
 <div class="main-card">
 	<div class="row">
+		<div class="icons">
+			<a on:click={() => (openModal = true)}>
+				<TooltipIcon icon={AddAssetIcon} tooltipText={'Add new asset'} />
+			</a>
+			<a href="/assets">
+				<TooltipIcon icon={BrowseAssetsIcon} tooltipText={'Browse all assets'} />
+			</a>
+		</div>
 		<div class="money-text">
 			<h1 class:red={dailyChange < 0} class:green={dailyChange > 0}>
 				{#if dailyChange < 0}
@@ -88,7 +103,29 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 0.5rem;
+		gap: 2rem;
+	}
+
+	.icons {
+		position: absolute;
+		left: 4vw;
+		top: 4vw;
+		width: 100%;
+
+		display: flex;
+		gap: 1rem;
+
+		:global(svg) {
+			color: white;
+			font-size: 3rem;
+			transition: scale 0.25s;
+		}
+
+		:hover {
+			:global(svg) {
+				scale: 115% 115%;
+			}
+		}
 	}
 
 	#net-worth-graph {
