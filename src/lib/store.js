@@ -1,3 +1,50 @@
 import { writable } from 'svelte/store';
 
-export const user = writable({});
+export const user = writable(
+    {
+        "assets": [
+            {
+                "asset_name": "Asset Name",
+                "asset_type": "Asset Name",
+                "function_type": "exponential",
+                "initial_value": 0,
+                "min_max_value": 0,
+                "r": 0.5,
+                "starting_date": "10/21/2023"
+            }
+        ],
+        "bills": [
+            {
+                "payment_amount": 0,
+                "payment_date": "10/21/2023"
+            }
+        ],
+        "checking_account_balance": 0,
+        "checking_account_reward": 0,
+        "credit_card_balance": 0,
+        "credit_card_rewards": 0,
+        "deposits": [
+            {
+                "account": "checkings",
+                "amount": 0,
+                "date": "10/21/2023"
+            }
+        ],
+        "monthly_bills": [
+            {
+                "amount": 0
+            }
+        ],
+        "savings_account_balance": 0,
+        "savings_account_rewards": 0,
+        "uid": "",
+        "withdrawls": [
+            {
+                "account": "checkings",
+                "amount": 0,
+                "date": "10/21/2023"
+            }
+        ]
+    }
+
+);

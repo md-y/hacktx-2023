@@ -20,8 +20,9 @@ testUserData = {
   "assets": [
     {
       "asset_name": "Asset Name",
+      "asset_type": "Asset Type",
       "function_type": "exponential",
-      "initial_value": "0",
+      "initial_value": 0,
       "min_max_value": 0,
       "r": 0.5,
       "starting_date": "10/21/2023"
