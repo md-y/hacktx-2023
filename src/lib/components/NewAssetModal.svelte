@@ -33,7 +33,7 @@
 		'Input initial value, buy date, current value, current date, and a maximum/minimum value (L)',
 		'Input current value, have an AI-suggested R value, and an AI-suggested L value'
 	];
-	let selectedParamMethod = paramMethods[0];
+	let selectedParamMethod = 0;
 
 	let currentStep = 0;
 
@@ -63,7 +63,7 @@
 		buyDate = '';
 		currentDate = '';
 		selectedEquationType = equationTypes[1].value;
-		selectedParamMethod = paramMethods[0];
+		selectedParamMethod = 0;
 		currentStep = 0;
 	}
 
@@ -189,13 +189,13 @@
 			starting_date: ''
 		};
 		//current value and growth rate
-		if (selectedParamMethod == paramMethods[0]) {
+		if (selectedParamMethod == 0) {
 			asset['initial_value'] = currentValue;
 			asset['r'] = growthRateR;
 			asset['starting_date'] = todayDate;
 		}
 		//initial value, buy date, current value, and current date
-		else if (selectedParamMethod == paramMethods[1]) {
+		else if (selectedParamMethod == 1) {
 			asset['initial_value'] = initialValue;
 			if (selectedEquationType == 'Exponential') {
 				asset['r'] = calculateExponentialR(initialValue, buyDate, currentValue, todayDate);
@@ -207,7 +207,7 @@
 			asset['starting_date'] = buyDate;
 		}
 		// Input current value, and have an AI-suggested R value
-		else if (selectedParamMethod == paramMethods[2]) {
+		else if (selectedParamMethod == 2) {
 			console.log(selectedEquationType);
 			console.log('HERE 1');
 			asset['initial_value'] = currentValue;
@@ -260,15 +260,15 @@
 		{:else if currentStep === 3}
 			<fieldset>
 				<legend>Select parameter method:</legend>
-				{#each selectedEquationType == 'Logistic' ? logisticParamMethods : paramMethods as method, index}
+				{#each (selectedEquationType == 'Logistic' ? logisticParamMethods : paramMethods) as method, index}
 					<label class="custom-label">
-						<input type="radio" bind:group={selectedParamMethod} value={method} />
+						<input type="radio" bind:group={selectedParamMethod} value={index} />
 						{method}
 					</label>
 				{/each}
 			</fieldset>
 		{:else if currentStep === 4}
-			{#if selectedParamMethod === paramMethods[0]}
+			{#if selectedParamMethod == 0}
 				<p>Enter current value</p>
 				<NumberInput bind:value={currentValue} />
 				{#if selectedEquationType == 'Linear'}
@@ -283,7 +283,7 @@
 					<p>Enter min/max value for curve</p>
 					<NumberInput bind:value={minMax} />
 				{/if}
-			{:else if selectedParamMethod === paramMethods[1]}
+			{:else if selectedParamMethod == 1}
 				<p>Enter initial value</p>
 				<NumberInput bind:value={initialValue} />
 				<p>Enter buy date (MM/DD/YYYY)</p>
