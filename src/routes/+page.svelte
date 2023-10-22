@@ -3,11 +3,14 @@
 	import { numberWithCommas } from '$lib/util';
 	import ArrowUp from '~icons/solar/double-alt-arrow-up-line-duotone';
 	import ArrowDown from '~icons/solar/double-alt-arrow-down-line-duotone';
+	import NewAssetModal from '$components/NewAssetModal.svelte';
 
 	const dailyChange = 69420;
 
 	let changeDown: boolean = false;
 </script>
+
+<NewAssetModal open={false}/>
 
 <div class="col">
 	<div class="row main">
