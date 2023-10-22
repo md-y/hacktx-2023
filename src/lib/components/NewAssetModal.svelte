@@ -12,24 +12,32 @@
     let buyDate = nowDate.getMonth() + 1 + "/" + nowDate.getDate() + "/" + nowDate.getFullYear();
     let currentDate = nowDate.getMonth() + 1 + "/" + nowDate.getDate() + "/" + nowDate.getFullYear();
     let minMax = 0;
+	let loading = false;
 
     let equationTypes = [
         { text: 'Linear', value: 'Linear' },
         { text: 'Exponential', value: 'Exponential' },
         { text: 'Logistic', value: 'Logistic' }
     ];
-    let selectedEquationType = equationTypes[0].value;
+    let selectedEquationType = equationTypes[1].value;
 
     let paramMethods = [
         'Input Current Value and growth/decay rate (R)',
         'Input initial value, buy date, current value, and current date',
         'Input current value, and have an AI-suggested R value'
     ];
+
+	let logisticParamMethods = [
+        'Input Current Value, growth/decay rate (R), and a maximum/minimum value (L)',
+        'Input initial value, buy date, current value, current date, and a maximum/minimum value (L)',
+        'Input current value, have an AI-suggested R value, and an AI-suggested L value'
+    ];
     let selectedParamMethod = paramMethods[0];
 
     let currentStep = 0;
 
     function nextStep() {
+		console.log(selectedEquationType);
         if(currentStep == 0 && !assetType)
             return;
         else if(currentStep == 1 && !assetName)
@@ -51,6 +59,7 @@
         assetName = "";
         currentValue = 0;
         growthRateR = 0;
+		minMax = 0;
         initialValue = 0;
         buyDate = "";
         currentDate = "";
@@ -66,14 +75,14 @@
 	}
 
     async function suggestRValue(asset, function_type) {
-        const API_ENDPOINT = "https://api.openai.com/v1/engines/davinci/completions"; 
-        const API_KEY = "YOUR_OPENAI_API_KEY";
+        const API_ENDPOINT = "https://api.openai.com/v1/chat/completions"; 
+        const API_KEY = "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";
 
-        const messages = [{
+		const messages = [{
             "role": "system",
             "content": `Please provide a ${function_type} growth/decay rate, R, for modeling ${asset} appreciation/depreciation. Make sure it is realistic and varies with different assets and function types. Make the R value negative if you think the asset depreciates and positive if you think the asset appreciates. Always return an R value.`
         }];
-
+		
         const response = await fetch(API_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -97,6 +106,43 @@
         }
 
         return parseFloat(numberMatches[0]);
+	}
+
+	async function suggestLValue(asset) {
+		console.log("Started L Value FUnction");
+		const API_ENDPOINT = "https://api.openai.com/v1/chat/completions"; 
+        const API_KEY = "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";
+
+		if (selectedEquationType === "Logistic") {
+			const messages = [{
+            "role": "system",
+            "content": `Please provide a maximum or minimum value, L, for modeling ${asset} appreciation/depreciation. It will be modeled with a logistic growth/decay function. Make sure it is realistic and varies with different assets and function types. Make the L value negative if you think the asset depreciates and positive if you think the asset appreciates. Always return an L value.`
+        	}];
+
+			const response = await fetch(API_ENDPOINT, {
+            	method: 'POST',
+            	headers: {
+                	'Authorization': `Bearer ${API_KEY}`,
+                	'Content-Type': 'application/json'
+            	},
+            	body: JSON.stringify({
+                	model: "gpt-3.5-turbo",
+                	messages: messages,
+                	max_tokens: 2000,
+            	})
+        	});
+			
+			const data = await response.json();
+
+        	const suggested_L_value = data.choices[0].message.content.trim();
+        	const numberMatches = suggested_L_value.match(/[-+]?\d*\.\d+|\d+/g);
+
+        	if (!numberMatches) {
+            	throw new Error("Failed to extract a valid number from GPT response.");
+        	}
+			console.log(parseFloat(numberMatches[0]));
+        	return parseFloat(numberMatches[0]);
+		}
 	}
 
     function calculateLinearR(initial_value, buy_date, current_value, current_date) {
@@ -127,8 +173,12 @@
         return (year1 - year2) / (1000*60*60*24) / 365
     }
 
+	function confirmForm(){
+		open = false;
+		resetForm();
+	}
+
     async function submitForm(){
-        open = false;
         const date = new Date();
         const todayDate = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
         let asset = {
@@ -160,14 +210,28 @@
             }
             asset['starting_date'] = buyDate;
         }
-        //Input current value, and have an AI-suggested R value
+        // Input current value, and have an AI-suggested R value
         else if(selectedParamMethod == paramMethods[2]){
+			console.log(selectedEquationType);
+			console.log("HERE 1");
             asset['initial_value'] = currentValue;
-            asset['r'] = await suggestRValue(assetName + " of type " + assetType, selectedEquationType);
-            asset['function_type'] = 'Exponential';
+			loading = true;
+			growthRateR = await suggestRValue(assetName + " of type " + assetType, selectedEquationType);
+            asset['r'] = growthRateR;
             asset['starting_date'] = todayDate;
+			console.log("HERE 2");
+
+			console.log(selectedEquationType);
+			console.log(selectedEquationType == 'Logistic');
+			if (selectedEquationType == "Logistic") {
+				console.log("HERE 3");
+				loading = true;
+				minMax = await suggestLValue(assetName + " of type " + assetType);
+				asset['min_max_value'] = minMax;
+			}
         }
 
+		loading = false;
         const userData = $user;
         userData['assets'].push(asset);
         $user = userData;
@@ -195,7 +259,6 @@
     }
 </style>
 
-<button on:click={() => open = true}>Add Asset</button>
 
 <Modal 
     bind:open 
@@ -221,7 +284,7 @@
         {:else if currentStep === 3}
             <fieldset>
                 <legend>Select parameter method:</legend>
-                {#each paramMethods as method, index}
+                {#each (selectedEquationType == "Logistic" ? logisticParamMethods : paramMethods) as method, index}
                     <label class="custom-label">
                         <input type="radio" bind:group={selectedParamMethod} value={method} />
                         {method}
@@ -266,19 +329,28 @@
             <!-- Display graph -->
             <p>Asset Name: {assetName}</p>
             <p>Asset Type: {assetType}</p>
+			{#if selectedEquationType == "Logistic"}
+				<p>Min/Max: {minMax}</p>
+			{/if}
+			<p>R: {growthRateR}</p>
         {/if}
         
         <div class="button-group">
             {#if currentStep > 0}
                 <Button on:click={prevStep}>Back</Button>
             {/if}
-            {#if currentStep < 5}
+            {#if currentStep < 4}
                 <Button on:click={nextStep}>Next</Button>
             {/if}
-            {#if currentStep === 5}
-                <Button on:click={submitForm}>Confirm</Button>
+			{#if currentStep == 4}
+                <Button on:click={()=>{submitForm(); nextStep();}}>Next</Button>
             {/if}
-            <Button on:click={closeModal}>Cancel</Button>
+            {#if currentStep === 5 && !loading}
+                <Button on:click={confirmForm}>Confirm</Button>
+			{:else if loading}
+			   <p>Loading...</p>
+            {/if}
+			
         </div>
     </Form>
 </Modal>
