@@ -4,6 +4,7 @@
 	import ChartDataLabels from 'chartjs-plugin-datalabels';
 	import _ from 'lodash';
 	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
 
 	export let data: Record<string, number>;
 
@@ -91,7 +92,7 @@
 				},
 				onClick(event, elements, chart) {
 					const elem = elements[0];
-					window.location.replace(`${base}/assets?type=${labels[elem.index]}`);
+					goto(`${base}/assets?type=${labels[elem.index]}`);
 				}
 			} as ChartOptions<'doughnut'>
 		});
